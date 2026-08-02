@@ -272,127 +272,118 @@ function t.new(bp)
 	end
 	local cr, cs, ct
 	local cu, cv, cw
-	cd.InputBegan:Connect(function(cx)
-		if cx.UserInputType == Enum.UserInputType.MouseButton1
-			or cx.UserInputType == Enum.UserInputType.Touch then
-			cr = true
-			cs = cx.Position
-			ct = cc.Position
-		end
-	end)
-	cd.InputEnded:Connect(function(cy)
+	local function cx(cy)
 		if cy.UserInputType == Enum.UserInputType.MouseButton1
 			or cy.UserInputType == Enum.UserInputType.Touch then
+			cr = true
+			cs = cy.Position
+			ct = cc.Position
+		end
+	end
+	local function cz(da)
+		if da.UserInputType == Enum.UserInputType.MouseButton1
+			or da.UserInputType == Enum.UserInputType.Touch then
 			cr = false
 		end
-	end)
-	cp.InputBegan:Connect(function(cz)
-		if cz.UserInputType == Enum.UserInputType.MouseButton1
-			or cz.UserInputType == Enum.UserInputType.Touch then
+	end
+	cd.InputBegan:Connect(cx)
+	cd.InputEnded:Connect(cz)
+	ce.InputBegan:Connect(cx)
+	ce.InputEnded:Connect(cz)
+	cg.InputBegan:Connect(cx)
+	cg.InputEnded:Connect(cz)
+	ch.InputBegan:Connect(cx)
+	ch.InputEnded:Connect(cz)
+	ci.InputBegan:Connect(cx)
+	ci.InputEnded:Connect(cz)
+	ck.InputBegan:Connect(cx)
+	ck.InputEnded:Connect(cz)
+	cp.InputBegan:Connect(function(db)
+		if db.UserInputType == Enum.UserInputType.MouseButton1
+			or db.UserInputType == Enum.UserInputType.Touch then
 			cu = true
-			cv = cz.Position
+			cv = db.Position
 			cw = cc.Size
 		end
 	end)
-	cp.InputEnded:Connect(function(da)
-		if da.UserInputType == Enum.UserInputType.MouseButton1
-			or da.UserInputType == Enum.UserInputType.Touch then
+	cp.InputEnded:Connect(function(dc)
+		if dc.UserInputType == Enum.UserInputType.MouseButton1
+			or dc.UserInputType == Enum.UserInputType.Touch then
 			cu = false
 		end
 	end)
-	b.InputChanged:Connect(function(db)
-		if db.UserInputType ~= Enum.UserInputType.MouseMovement
-			and db.UserInputType ~= Enum.UserInputType.Touch then
+	b.InputChanged:Connect(function(dd)
+		if dd.UserInputType ~= Enum.UserInputType.MouseMovement
+			and dd.UserInputType ~= Enum.UserInputType.Touch then
 			return
 		end
 		if cr then
-			local dc = db.Position - cs
+			local de = dd.Position - cs
 			cc.Position = UDim2.new(
-				ct.X.Scale, ct.X.Offset + dc.X,
-				ct.Y.Scale, ct.Y.Offset + dc.Y
+				ct.X.Scale, ct.X.Offset + de.X,
+				ct.Y.Scale, ct.Y.Offset + de.Y
 			)
 		elseif cu then
-			local dd = db.Position - cv
-			local de = math.max(h, cw.X.Offset + dd.X)
-			local df = math.max(i, cw.Y.Offset + dd.Y)
-			cc.Size = UDim2.new(cw.X.Scale, de, cw.Y.Scale, df)
+			local df = dd.Position - cv
+			local dg = math.max(h, cw.X.Offset + df.X)
+			local dh = math.max(i, cw.Y.Offset + df.Y)
+			cc.Size = UDim2.new(cw.X.Scale, dg, cw.Y.Scale, dh)
 		elseif bu then
-			local dg = db.Position - bv
-			if math.abs(dg.X) > 3 or math.abs(dg.Y) > 3 then
+			local di = dd.Position - bv
+			if math.abs(di.X) > 3 or math.abs(di.Y) > 3 then
 				bx = true
 			end
 			bs.Position = UDim2.new(
-				bw.X.Scale, bw.X.Offset + dg.X,
-				bw.Y.Scale, bw.Y.Offset + dg.Y
+				bw.X.Scale, bw.X.Offset + di.X,
+				bw.Y.Scale, bw.Y.Offset + di.Y
 			)
 		end
 	end)
+	bq._cx = cx
+	bq._cz = cz
 	return bq
 end
-local dh = {}
-dh.__index = dh
-function t:AddTab(di)
-	local dj = #self.tabs + 1
-	local dk = p("TextButton", {
+local di = {}
+di.__index = di
+function t:AddTab(dj)
+	local dk = #self.tabs + 1
+	local dl = p("TextButton", {
 		Parent = self.tabList,
 		Size = UDim2.new(1, -15, 0, 32),
 		BackgroundColor3 = e.buttonBackground,
 		BackgroundTransparency = 1,
-		Text = "   " .. di,
+		Text = "   " .. dj,
 		TextColor3 = e.textSecondary,
 		Font = e.font,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	q(dk)
-	dk.MouseEnter:Connect(function()
-		if dk.BackgroundTransparency == 1 then
-			a:Create(dk, TweenInfo.new(0.15), {
+	q(dl)
+	dl.MouseEnter:Connect(function()
+		if dl.BackgroundTransparency == 1 then
+			a:Create(dl, TweenInfo.new(0.15), {
 				BackgroundTransparency = 0,
 				BackgroundColor3 = Color3.fromRGB(20, 32, 44)
 			}):Play()
 		end
 	end)
-	dk.MouseLeave:Connect(function()
-		if dk.TextColor3 ~= e.textPrimary then
-			a:Create(dk, TweenInfo.new(0.15), {
+	dl.MouseLeave:Connect(function()
+		if dl.TextColor3 ~= e.textPrimary then
+			a:Create(dl, TweenInfo.new(0.15), {
 				BackgroundTransparency = 1
 			}):Play()
 		end
 	end)
-	local dl = p("Frame", {
+	local dm = p("Frame", {
 		Parent = self.content,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
-		Visible = dj == 1
-	})
-	local dm = p("ScrollingFrame", {
-		Parent = dl,
-		Size = UDim2.new(m, -4, 1, 0),
-		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundTransparency = 1,
-		ScrollBarThickness = 4,
-		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		CanvasSize = UDim2.new(0, 0, 0, 0)
-	})
-	p("UIListLayout", { Parent = dm, Padding = UDim.new(0, 8) })
-	p("UIPadding", {
-		Parent = dm,
-		PaddingTop = UDim.new(0, 8),
-		PaddingLeft = UDim.new(0, 8),
-		PaddingRight = UDim.new(0, 8)
-	})
-	p("Frame", {
-		Parent = dl,
-		Size = UDim2.new(0, 1, 1, -12),
-		Position = UDim2.new(m, 0, 0, 6),
-		BackgroundColor3 = e.divider,
-		BorderSizePixel = 0
+		Visible = dk == 1
 	})
 	local dn = p("ScrollingFrame", {
-		Parent = dl,
-		Size = UDim2.new(1 - m, -4, 1, 0),
-		Position = UDim2.new(m, 4, 0, 0),
+		Parent = dm,
+		Size = UDim2.new(m, -4, 1, 0),
+		Position = UDim2.new(0, 0, 0, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 4,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -405,93 +396,124 @@ function t:AddTab(di)
 		PaddingLeft = UDim.new(0, 8),
 		PaddingRight = UDim.new(0, 8)
 	})
-	table.insert(self.tabs, { Button = dk, Page = dl })
-	table.insert(self.tabOffsets, 10 + (dj - 1) * 37)
-	dk.MouseButton1Click:Connect(function()
-		self:SelectTab(dj)
+	p("Frame", {
+		Parent = dm,
+		Size = UDim2.new(0, 1, 1, -12),
+		Position = UDim2.new(m, 0, 0, 6),
+		BackgroundColor3 = e.divider,
+		BorderSizePixel = 0
+	})
+	local do_ = p("ScrollingFrame", {
+		Parent = dm,
+		Size = UDim2.new(1 - m, -4, 1, 0),
+		Position = UDim2.new(m, 4, 0, 0),
+		BackgroundTransparency = 1,
+		ScrollBarThickness = 4,
+		AutomaticCanvasSize = Enum.AutomaticSize.Y,
+		CanvasSize = UDim2.new(0, 0, 0, 0)
+	})
+	p("UIListLayout", { Parent = do_, Padding = UDim.new(0, 8) })
+	p("UIPadding", {
+		Parent = do_,
+		PaddingTop = UDim.new(0, 8),
+		PaddingLeft = UDim.new(0, 8),
+		PaddingRight = UDim.new(0, 8)
+	})
+	if self._cx and self._cz then
+		dn.InputBegan:Connect(self._cx)
+		dn.InputEnded:Connect(self._cz)
+		do_.InputBegan:Connect(self._cx)
+		do_.InputEnded:Connect(self._cz)
+		dm.InputBegan:Connect(self._cx)
+		dm.InputEnded:Connect(self._cz)
+	end
+	table.insert(self.tabs, { Button = dl, Page = dm })
+	table.insert(self.tabOffsets, 10 + (dk - 1) * 37)
+	dl.MouseButton1Click:Connect(function()
+		self:SelectTab(dk)
 	end)
 	return setmetatable({
-		page = dl,
-		main = dm,
-		side = dn,
+		page = dm,
+		main = dn,
+		side = do_,
 		library = self
-	}, dh)
+	}, di)
 end
-function t:SelectTab(do_)
-	self.selectedIndex = do_
-	for dp, dq in ipairs(self.tabs) do
-		dq.Page.Visible = (dp == do_)
-		if dp == do_ then
-			a:Create(dq.Button, TweenInfo.new(0.15), {
+function t:SelectTab(dp)
+	self.selectedIndex = dp
+	for dq, dr in ipairs(self.tabs) do
+		dr.Page.Visible = (dq == dp)
+		if dq == dp then
+			a:Create(dr.Button, TweenInfo.new(0.15), {
 				BackgroundTransparency = 0,
 				BackgroundColor3 = e.accentSelected,
 				TextColor3 = e.textPrimary
 			}):Play()
 		else
-			a:Create(dq.Button, TweenInfo.new(0.15), {
+			a:Create(dr.Button, TweenInfo.new(0.15), {
 				BackgroundTransparency = 1,
 				TextColor3 = e.textSecondary
 			}):Play()
 		end
 	end
 	a:Create(self.indicator, TweenInfo.new(0.2), {
-		Position = UDim2.new(0, 5, 0, self.tabOffsets[do_] or 10)
+		Position = UDim2.new(0, 5, 0, self.tabOffsets[dp] or 10)
 	}):Play()
 end
-function dh:AddSectionLabel(dr, ds)
-	local dt = ds and self.side or self.main
+function di:AddSectionLabel(ds, dt)
+	local du = dt and self.side or self.main
 	return p("TextLabel", {
-		Parent = dt,
+		Parent = du,
 		Size = UDim2.new(1, 0, 0, 22),
 		BackgroundTransparency = 1,
-		Text = dr,
+		Text = ds,
 		TextColor3 = e.accentFill,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
 end
-function dh:AddButton(du, dv, dw)
-	local dx = dw and self.side or self.main
-	local dy = p("TextButton", {
-		Parent = dx,
+function di:AddButton(dv, dw, dx)
+	local dy = dx and self.side or self.main
+	local dz = p("TextButton", {
+		Parent = dy,
 		Size = UDim2.new(1, 0, 0, 36),
 		BackgroundColor3 = e.buttonBackground,
-		Text = "   " .. du,
+		Text = "   " .. dv,
 		TextColor3 = e.textMuted,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	q(dy)
-	r(dy, Color3.fromRGB(45, 62, 76), 1)
-	dy.Activated:Connect(function()
-		if dv then dv() end
+	q(dz)
+	r(dz, Color3.fromRGB(45, 62, 76), 1)
+	dz.Activated:Connect(function()
+		if dw then dw() end
 	end)
-	return dy
+	return dz
 end
-function dh:AddToggle(dz, ea, eb)
-	local ec = eb and self.side or self.main
-	local ed = p("TextButton", {
-		Parent = ec,
+function di:AddToggle(ea, eb, ec)
+	local ed = ec and self.side or self.main
+	local ee = p("TextButton", {
+		Parent = ed,
 		Size = UDim2.new(1, 0, 0, 36),
 		BackgroundColor3 = e.buttonBackground,
-		Text = "   " .. dz,
+		Text = "   " .. ea,
 		TextColor3 = e.textMuted,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	q(ed)
-	local ee = p("Frame", {
-		Parent = ed,
+	q(ee)
+	local ef = p("Frame", {
+		Parent = ee,
 		Size = UDim2.new(0, 16, 0, 16),
 		Position = UDim2.new(1, -28, 0.5, -8),
 		BackgroundColor3 = e.inputBackground
 	})
-	q(ee, 4)
-	local ef = p("TextLabel", {
-		Parent = ee,
+	q(ef, 4)
+	local eg = p("TextLabel", {
+		Parent = ef,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
 		Text = "",
@@ -499,211 +521,211 @@ function dh:AddToggle(dz, ea, eb)
 		Font = e.font,
 		TextSize = 12
 	})
-	local eg = false
-	ed.Activated:Connect(function()
-		eg = not eg
-		ef.Text = eg and "" or ""
-		ee.BackgroundColor3 = eg and e.accentFill or e.inputBackground
-		if ea then ea(eg) end
+	local eh = false
+	ee.Activated:Connect(function()
+		eh = not eh
+		eg.Text = eh and "" or ""
+		ef.BackgroundColor3 = eh and e.accentFill or e.inputBackground
+		if eb then eb(eh) end
 	end)
-	return ed
+	return ee
 end
-function dh:AddTextbox(eh, ei, ej, ek)
-	local el = ek and self.side or self.main
-	local em = p("Frame", {
-		Parent = el,
+function di:AddTextbox(ei, ej, ek, el)
+	local em = el and self.side or self.main
+	local en = p("Frame", {
+		Parent = em,
 		Size = UDim2.new(1, 0, 0, 36),
 		BackgroundColor3 = e.buttonBackground
 	})
-	q(em)
-	r(em, Color3.fromRGB(45, 62, 76), 1)
+	q(en)
+	r(en, Color3.fromRGB(45, 62, 76), 1)
 	p("TextLabel", {
-		Parent = em,
+		Parent = en,
 		Size = UDim2.new(0.45, 0, 1, 0),
 		Position = UDim2.new(0, 10, 0, 0),
 		BackgroundTransparency = 1,
-		Text = eh,
+		Text = ei,
 		TextColor3 = e.textMuted,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local en = p("TextBox", {
-		Parent = em,
+	local eo = p("TextBox", {
+		Parent = en,
 		Size = UDim2.new(0.5, -14, 0, 24),
 		Position = UDim2.new(0.5, 0, 0.5, -12),
 		BackgroundColor3 = e.inputBackground,
 		TextColor3 = e.textPrimary,
-		PlaceholderText = ei or "",
+		PlaceholderText = ej or "",
 		PlaceholderColor3 = e.textSecondary,
 		Font = e.fontBody,
 		TextSize = 12,
 		Text = "",
 		ClearTextOnFocus = false
 	})
-	q(en, 5)
-	en.FocusLost:Connect(function(eo)
-		if ej then ej(en.Text, eo) end
+	q(eo, 5)
+	eo.FocusLost:Connect(function(ep)
+		if ek then ek(eo.Text, ep) end
 	end)
-	return en
+	return eo
 end
-function dh:AddSlider(ep, eq, er, es, et, eu)
-	local ev = eu and self.side or self.main
-	eq = eq or 0
-	er = er or 100
-	es = math.clamp(es or eq, eq, er)
-	local ew = p("Frame", {
-		Parent = ev,
+function di:AddSlider(eq, er, es, et, eu, ev)
+	local ew = ev and self.side or self.main
+	er = er or 0
+	es = es or 100
+	et = math.clamp(et or er, er, es)
+	local ex = p("Frame", {
+		Parent = ew,
 		Size = UDim2.new(1, 0, 0, 52),
 		BackgroundColor3 = e.buttonBackground
 	})
-	q(ew)
-	r(ew, Color3.fromRGB(45, 62, 76), 1)
+	q(ex)
+	r(ex, Color3.fromRGB(45, 62, 76), 1)
 	p("TextLabel", {
-		Parent = ew,
+		Parent = ex,
 		Size = UDim2.new(1, -70, 0, 20),
 		Position = UDim2.new(0, 10, 0, 4),
 		BackgroundTransparency = 1,
-		Text = ep,
+		Text = eq,
 		TextColor3 = e.textMuted,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local ex = p("TextBox", {
-		Parent = ew,
+	local ey = p("TextBox", {
+		Parent = ex,
 		Size = UDim2.new(0, 50, 0, 20),
 		Position = UDim2.new(1, -60, 0, 4),
 		BackgroundColor3 = e.inputBackground,
 		TextColor3 = e.textPrimary,
 		Font = e.fontBody,
 		TextSize = 12,
-		Text = tostring(es),
+		Text = tostring(et),
 		ClearTextOnFocus = false
 	})
-	q(ex, 5)
-	local ey = p("Frame", {
-		Parent = ew,
+	q(ey, 5)
+	local ez = p("Frame", {
+		Parent = ex,
 		Size = UDim2.new(1, -20, 0, 6),
 		Position = UDim2.new(0, 10, 1, -14),
 		BackgroundColor3 = e.inputBackground
 	})
-	q(ey, 3)
-	local ez = p("Frame", {
-		Parent = ey,
+	q(ez, 3)
+	local fa = p("Frame", {
+		Parent = ez,
 		Size = UDim2.new(0, 0, 1, 0),
 		BackgroundColor3 = e.accentFill
 	})
-	q(ez, 3)
-	local fa = p("Frame", {
-		Parent = ey,
+	q(fa, 3)
+	local fb = p("Frame", {
+		Parent = ez,
 		Size = UDim2.new(0, 12, 0, 12),
 		Position = UDim2.new(0, -6, 0.5, -6),
 		BackgroundColor3 = e.textPrimary,
 		ZIndex = 5
 	})
-	q(fa, 6)
-	local fb = es
-	local function fc(fd, fe)
-		fd = math.clamp(fd, eq, er)
-		fb = fd
-		local ff = (er - eq) == 0 and 0 or (fd - eq) / (er - eq)
-		ez.Size = UDim2.new(ff, 0, 1, 0)
-		fa.Position = UDim2.new(ff, -6, 0.5, -6)
-		if not fe then
-			ex.Text = tostring(math.floor(fd * 100) / 100)
+	q(fb, 6)
+	local fc = et
+	local function fd(fe, ff)
+		fe = math.clamp(fe, er, es)
+		fc = fe
+		local fg = (es - er) == 0 and 0 or (fe - er) / (es - er)
+		fa.Size = UDim2.new(fg, 0, 1, 0)
+		fb.Position = UDim2.new(fg, -6, 0.5, -6)
+		if not ff then
+			ey.Text = tostring(math.floor(fe * 100) / 100)
 		end
-		if et then et(fd) end
+		if eu then eu(fe) end
 	end
-	fc(es)
-	local fg = false
-	local function fh(fi)
-		local fj = (fi - ey.AbsolutePosition.X) / ey.AbsoluteSize.X
-		fc(eq + fj * (er - eq))
+	fd(et)
+	local fh = false
+	local function fi(fj)
+		local fk = (fj - ez.AbsolutePosition.X) / ez.AbsoluteSize.X
+		fd(er + fk * (es - er))
 	end
-	ey.InputBegan:Connect(function(fk)
-		if fk.UserInputType == Enum.UserInputType.MouseButton1
-			or fk.UserInputType == Enum.UserInputType.Touch then
-			fg = true
-			fh(fk.Position.X)
-		end
-	end)
-	ey.InputEnded:Connect(function(fl)
+	ez.InputBegan:Connect(function(fl)
 		if fl.UserInputType == Enum.UserInputType.MouseButton1
 			or fl.UserInputType == Enum.UserInputType.Touch then
-			fg = false
+			fh = true
+			fi(fl.Position.X)
 		end
 	end)
-	b.InputChanged:Connect(function(fm)
-		if fg and (fm.UserInputType == Enum.UserInputType.MouseMovement
-			or fm.UserInputType == Enum.UserInputType.Touch) then
-			fh(fm.Position.X)
+	ez.InputEnded:Connect(function(fm)
+		if fm.UserInputType == Enum.UserInputType.MouseButton1
+			or fm.UserInputType == Enum.UserInputType.Touch then
+			fh = false
 		end
 	end)
-	b.InputEnded:Connect(function(fn)
-		if fn.UserInputType == Enum.UserInputType.MouseButton1
-			or fn.UserInputType == Enum.UserInputType.Touch then
-			fg = false
+	b.InputChanged:Connect(function(fn)
+		if fh and (fn.UserInputType == Enum.UserInputType.MouseMovement
+			or fn.UserInputType == Enum.UserInputType.Touch) then
+			fi(fn.Position.X)
 		end
 	end)
-	ex.FocusLost:Connect(function()
-		local fo = tonumber(ex.Text)
-		if fo then
-			fc(fo, true)
-			ex.Text = tostring(fb)
+	b.InputEnded:Connect(function(fo)
+		if fo.UserInputType == Enum.UserInputType.MouseButton1
+			or fo.UserInputType == Enum.UserInputType.Touch then
+			fh = false
+		end
+	end)
+	ey.FocusLost:Connect(function()
+		local fp = tonumber(ey.Text)
+		if fp then
+			fd(fp, true)
+			ey.Text = tostring(fc)
 		else
-			ex.Text = tostring(fb)
+			ey.Text = tostring(fc)
 		end
 	end)
 	return {
-		Set = fc,
-		Get = function() return fb end
+		Set = fd,
+		Get = function() return fc end
 	}
 end
-function dh:AddDropdown(fp, fq, fr, fs)
-	if fr == nil then fr = true end
-	local ft = fr and self.side or self.main
-	local fu = self.library
-	local fv = 24
-	local fw = 2
-	local fx = 150
-	local fy = p("Frame", {
-		Parent = ft,
+function di:AddDropdown(fq, fr, fs, ft)
+	if fs == nil then fs = true end
+	local fu = fs and self.side or self.main
+	local fv = self.library
+	local fw = 24
+	local fx = 2
+	local fy = 150
+	local fz = p("Frame", {
+		Parent = fu,
 		Size = UDim2.new(1, 0, 0, 26),
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.Y,
 		ZIndex = 2
 	})
-	p("UIListLayout", { Parent = fy, Padding = UDim.new(0, 4) })
-	local fz = p("TextButton", {
-		Parent = fy,
+	p("UIListLayout", { Parent = fz, Padding = UDim.new(0, 4) })
+	local ga = p("TextButton", {
+		Parent = fz,
 		Size = UDim2.new(1, 0, 0, 26),
 		BackgroundColor3 = e.buttonBackground,
 		Text = "",
 		AutoButtonColor = false,
 		ZIndex = 2
 	})
-	q(fz)
-	local ga = p("TextLabel", {
-		Parent = fz,
+	q(ga)
+	local gb = p("TextLabel", {
+		Parent = ga,
 		Size = UDim2.new(1, -10, 1, 0),
 		Position = UDim2.new(0, 10, 0, 0),
 		BackgroundTransparency = 1,
-		Text = fp .. "  " .. n,
+		Text = fq .. "  " .. n,
 		TextColor3 = e.accentFill,
 		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ZIndex = 2
 	})
-	local gb = p("Frame", {
-		Parent = fy,
+	local gc = p("Frame", {
+		Parent = fz,
 		Size = UDim2.new(1, 0, 0, 20),
 		BackgroundTransparency = 1,
 		ZIndex = 2
 	})
-	local gc = p("TextButton", {
-		Parent = gb,
+	local gd = p("TextButton", {
+		Parent = gc,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundColor3 = e.inputBackground,
 		Text = "Close  ×",
@@ -712,9 +734,9 @@ function dh:AddDropdown(fp, fq, fr, fs)
 		TextSize = 12,
 		ZIndex = 2
 	})
-	q(gc, 4)
-	local gd = p("ScrollingFrame", {
-		Parent = fy,
+	q(gd, 4)
+	local ge = p("ScrollingFrame", {
+		Parent = fz,
 		Size = UDim2.new(1, 0, 0, 0),
 		CanvasSize = UDim2.new(0, 0, 0, 0),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
@@ -724,169 +746,169 @@ function dh:AddDropdown(fp, fq, fr, fs)
 		Visible = true,
 		ZIndex = 2
 	})
-	q(gd, 6)
-	p("UIListLayout", { Parent = gd, Padding = UDim.new(0, fw) })
+	q(ge, 6)
+	p("UIListLayout", { Parent = ge, Padding = UDim.new(0, fx) })
 	p("UIPadding", {
-		Parent = gd,
+		Parent = ge,
 		PaddingTop = UDim.new(0, 4),
 		PaddingBottom = UDim.new(0, 4),
 		PaddingLeft = UDim.new(0, 4),
 		PaddingRight = UDim.new(0, 4)
 	})
-	local ge = {
-		frame = fy,
-		content = gd,
-		multiSelect = fs and true or false,
+	local gf = {
+		frame = fz,
+		content = ge,
+		multiSelect = ft and true or false,
 		selected = {},
 		_options = {}
 	}
-	local gf = true
-	local function gg()
-		local gh = #ge._options
-		local gi = 0
-		if gh > 0 then
-			gi = math.min(gh * fv + (gh - 1) * fw + 8, fx)
+	local gg = true
+	local function gh()
+		local gi = #gf._options
+		local gj = 0
+		if gi > 0 then
+			gj = math.min(gi * fw + (gi - 1) * fx + 8, fy)
 		end
-		gd.Size = UDim2.new(1, 0, 0, gi)
+		ge.Size = UDim2.new(1, 0, 0, gj)
 	end
-	local function gj(gk)
-		fy.ZIndex = gk
-		fz.ZIndex = gk
-		ga.ZIndex = gk
-		gb.ZIndex = gk
-		gc.ZIndex = gk
-		gd.ZIndex = gk
-		for _, gl in ipairs(gd:GetChildren()) do
-			if gl:IsA("GuiObject") then
-				gl.ZIndex = gk
+	local function gk(gl)
+		fz.ZIndex = gl
+		ga.ZIndex = gl
+		gb.ZIndex = gl
+		gc.ZIndex = gl
+		gd.ZIndex = gl
+		ge.ZIndex = gl
+		for _, gm in ipairs(ge:GetChildren()) do
+			if gm:IsA("GuiObject") then
+				gm.ZIndex = gl
 			end
 		end
 	end
-	function ge:SetOpen(gm)
-		gf = gm
-		gd.Visible = gm
-		gb.Visible = gm
-		ga.Text = fp .. "  " .. (gm and n or o)
-		gj(gm and 10 or 2)
-		if gm and fu then
-			for _, gn in ipairs(fu.dropdowns) do
-				if gn ~= ge and gn._IsExpanded and gn._IsExpanded() then
-					gn:SetOpen(false)
+	function gf:SetOpen(gn)
+		gg = gn
+		ge.Visible = gn
+		gc.Visible = gn
+		gb.Text = fq .. "  " .. (gn and n or o)
+		gk(gn and 10 or 2)
+		if gn and fv then
+			for _, go in ipairs(fv.dropdowns) do
+				if go ~= gf and go._IsExpanded and go._IsExpanded() then
+					go:SetOpen(false)
 				end
 			end
 		end
 	end
-	ge._IsExpanded = function()
-		return gf
+	gf._IsExpanded = function()
+		return gg
 	end
-	function ge:AddOption(go, gp)
-		local gq = p("TextButton", {
-			Parent = gd,
-			Size = UDim2.new(1, 0, 0, fv),
+	function gf:AddOption(gp, gq)
+		local gr = p("TextButton", {
+			Parent = ge,
+			Size = UDim2.new(1, 0, 0, fw),
 			BackgroundTransparency = 1,
-			Text = "  " .. go,
+			Text = "  " .. gp,
 			TextColor3 = Color3.fromRGB(198, 214, 224),
 			Font = Enum.Font.Gotham,
 			TextSize = 12,
 			TextXAlignment = Enum.TextXAlignment.Left,
-			ZIndex = gf and 10 or 2,
+			ZIndex = gg and 10 or 2,
 			AutoButtonColor = false
 		})
-		local gr = false
-		local gs
-		local function gt()
-			if gr then
-				gq.BackgroundTransparency = 0
-				gq.BackgroundColor3 = e.accentSelected
-				gq.TextColor3 = e.textPrimary
-				gq.Text = (ge.multiSelect and "✓ " or "  ") .. go
+		local gs = false
+		local gt
+		local function gu()
+			if gs then
+				gr.BackgroundTransparency = 0
+				gr.BackgroundColor3 = e.accentSelected
+				gr.TextColor3 = e.textPrimary
+				gr.Text = (gf.multiSelect and "✓ " or "  ") .. gp
 			else
-				gq.BackgroundTransparency = 1
-				gq.TextColor3 = Color3.fromRGB(198, 214, 224)
-				gq.Text = "  " .. go
+				gr.BackgroundTransparency = 1
+				gr.TextColor3 = Color3.fromRGB(198, 214, 224)
+				gr.Text = "  " .. gp
 			end
 		end
-		local function gu(gv)
-			gr = gv
-			gt()
-			ge.selected[go] = gv or nil
+		local function gv(gw)
+			gs = gw
+			gu()
+			gf.selected[gp] = gw or nil
 		end
-		gq.MouseEnter:Connect(function()
-			if not gr then
-				gq.BackgroundTransparency = 0
-				gq.BackgroundColor3 = Color3.fromRGB(20, 32, 44)
+		gr.MouseEnter:Connect(function()
+			if not gs then
+				gr.BackgroundTransparency = 0
+				gr.BackgroundColor3 = Color3.fromRGB(20, 32, 44)
 			end
 		end)
-		gq.MouseLeave:Connect(function()
-			if not gr then
-				gq.BackgroundTransparency = 1
+		gr.MouseLeave:Connect(function()
+			if not gs then
+				gr.BackgroundTransparency = 1
 			end
 		end)
-		gq.Activated:Connect(function()
-			if ge.multiSelect then
-				gu(not gr)
-				if gp then gp(gr) end
+		gr.Activated:Connect(function()
+			if gf.multiSelect then
+				gv(not gs)
+				if gq then gq(gs) end
 			else
-				for _, gw in ipairs(ge._options) do
-					if gw ~= gs then
-						gw.SetSelected(false)
+				for _, gx in ipairs(gf._options) do
+					if gx ~= gt then
+						gx.SetSelected(false)
 					end
 				end
-				gu(true)
-				if gp then gp() end
+				gv(true)
+				if gq then gq() end
 			end
 		end)
-		gs = { Button = gq, Text = go, SetSelected = gu }
-		table.insert(ge._options, gs)
-		gg()
-		return gq
+		gt = { Button = gr, Text = gp, SetSelected = gv }
+		table.insert(gf._options, gt)
+		gh()
+		return gr
 	end
-	function ge:RemoveOption(gx)
-		if not gx then return end
-		for gy, gz in ipairs(ge._options) do
-			if gz.Button == gx then
-				ge.selected[gz.Text] = nil
-				table.remove(ge._options, gy)
+	function gf:RemoveOption(gy)
+		if not gy then return end
+		for gz, ha in ipairs(gf._options) do
+			if ha.Button == gy then
+				gf.selected[ha.Text] = nil
+				table.remove(gf._options, gz)
 				break
 			end
 		end
-		gx:Destroy()
-		gg()
+		gy:Destroy()
+		gh()
 	end
-	function ge:Clear()
-		for _, ha in ipairs(gd:GetChildren()) do
-			if ha:IsA("TextButton") then
-				ha:Destroy()
+	function gf:Clear()
+		for _, hb in ipairs(ge:GetChildren()) do
+			if hb:IsA("TextButton") then
+				hb:Destroy()
 			end
 		end
-		ge._options = {}
-		ge.selected = {}
-		gg()
+		gf._options = {}
+		gf.selected = {}
+		gh()
 	end
-	function ge:GetSelected()
-		local hb = {}
-		for _, hc in ipairs(ge._options) do
-			if ge.selected[hc.Text] then
-				table.insert(hb, hc.Text)
+	function gf:GetSelected()
+		local hc = {}
+		for _, hd in ipairs(gf._options) do
+			if gf.selected[hd.Text] then
+				table.insert(hc, hd.Text)
 			end
 		end
-		return hb
+		return hc
 	end
-	fz.Activated:Connect(function()
-		ge:SetOpen(not gf)
+	ga.Activated:Connect(function()
+		gf:SetOpen(not gg)
 	end)
-	gc.Activated:Connect(function()
-		ge:SetOpen(false)
+	gd.Activated:Connect(function()
+		gf:SetOpen(false)
 	end)
-	if fq then
-		for _, hd in ipairs(fq) do
-			ge:AddOption(hd.Text, hd.Callback)
+	if fr then
+		for _, he in ipairs(fr) do
+			gf:AddOption(he.Text, he.Callback)
 		end
 	end
-	if fu then
-		table.insert(fu.dropdowns, ge)
+	if fv then
+		table.insert(fv.dropdowns, gf)
 	end
-	ge:SetOpen(true)
-	return ge
+	gf:SetOpen(true)
+	return gf
 end
 return t
