@@ -807,7 +807,7 @@ function di:AddDropdown(fq, fr, fs, ft)
 			BackgroundTransparency = 1,
 			Text = "  " .. gp,
 			TextColor3 = Color3.fromRGB(198, 214, 224),
-			Font = Enum.Font.Gotham,
+			Font = Enum.Font.PermanentMarker,
 			TextSize = 12,
 			TextXAlignment = Enum.TextXAlignment.Left,
 			ZIndex = gg and 10 or 2,
