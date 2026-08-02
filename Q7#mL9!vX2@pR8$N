@@ -1,27 +1,27 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local Lighting = game:GetService("Lighting")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local TreeUILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/A7kP9xLm2Qr8Vz4Nc1Wf6Hy3Ta5Rb8Jm2Xp4/O7x_Q2mL9-rV4.pZ8kT3/refs/heads/main/N7%23qL9%40vX2!mRp8%24"))()
-local LocalPlayer = Players.LocalPlayer
-local DisplayName = LocalPlayer.DisplayName
-local camera = workspace.CurrentCamera
+local a = game:GetService("Players")
+local b = game:GetService("RunService")
+local c = game:GetService("Lighting")
+local d = game:GetService("ReplicatedStorage")
+local e = loadstring(game:HttpGet("https://raw.githubusercontent.com/A7kP9xLm2Qr8Vz4Nc1Wf6Hy3Ta5Rb8Jm2Xp4/O7x_Q2mL9-rV4.pZ8kT3/refs/heads/main/N7%23qL9%40vX2!mRp8%24"))()
+local f = a.LocalPlayer
+local g = f.DisplayName
+local h = workspace.CurrentCamera
 _G.blacklistedPlayers = _G.blacklistedPlayers or {}
 _G.tpListedPlayers    = _G.tpListedPlayers or {}
 _G.watchlistedPlayers = _G.watchlistedPlayers or {}
-local function isBlacklisted(plr)
+local function i(plr)
 	for _, name in ipairs(_G.blacklistedPlayers) do
 		if name:lower() == plr.Name:lower() then return true end
 	end
 	return false
 end
-local function isTpListed(plr)
+local function j(plr)
 	for _, name in ipairs(_G.tpListedPlayers) do
 		if name:lower() == plr.Name:lower() then return true end
 	end
 	return false
 end
-local function isWatchlisted(plr)
+local function k(plr)
 	local n = plr.Name:lower()
 	local d = plr.DisplayName:lower()
 	for _, word in ipairs(_G.watchlistedPlayers) do
@@ -32,38 +32,38 @@ local function isWatchlisted(plr)
 	end
 	return false
 end
-local function getChar()
-	if not LocalPlayer.Character then
-		repeat task.wait() until LocalPlayer.Character
+local function l()
+	if not f.Character then
+		repeat task.wait() until f.Character
 	end
-	return LocalPlayer.Character
+	return f.Character
 end
-local function isAlive(plr)
+local function m(plr)
 	return plr and plr.Character
 		and plr.Character:FindFirstChild("HumanoidRootPart")
 		and plr.Character:FindFirstChild("Humanoid")
 		and plr.Character.Humanoid.Health > 0
 end
-local function punch()
-	for _, tool in pairs(LocalPlayer.Backpack:GetChildren()) do
-		if tool.Name == "Punch" and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
-			LocalPlayer.Character.Humanoid:EquipTool(tool)
+local function n()
+	for _, tool in pairs(f.Backpack:GetChildren()) do
+		if tool.Name == "Punch" and f.Character and f.Character:FindFirstChild("Humanoid") then
+			f.Character.Humanoid:EquipTool(tool)
 		end
 	end
-	if LocalPlayer:FindFirstChild("muscleEvent") then
-		LocalPlayer.muscleEvent:FireServer("punch", "leftHand")
-		LocalPlayer.muscleEvent:FireServer("punch", "rightHand")
+	if f:FindFirstChild("muscleEvent") then
+		f.muscleEvent:FireServer("punch", "leftHand")
+		f.muscleEvent:FireServer("punch", "rightHand")
 	end
 end
-local function killPlayer(plr)
-	if not isAlive(plr) or not getChar():FindFirstChild("LeftHand") then return end
+local function o(plr)
+	if not m(plr) or not l():FindFirstChild("LeftHand") then return end
 	pcall(function()
-		firetouchinterest(plr.Character.HumanoidRootPart, getChar().LeftHand, 0)
-		firetouchinterest(plr.Character.HumanoidRootPart, getChar().LeftHand, 1)
-		punch()
+		firetouchinterest(plr.Character.HumanoidRootPart, l().LeftHand, 0)
+		firetouchinterest(plr.Character.HumanoidRootPart, l().LeftHand, 1)
+		n()
 	end)
 end
-local function formatShort(n)
+local function p(n)
 	if n >= 1e15 then return string.format("%.1fqa", n / 1e15)
 	elseif n >= 1e12 then return string.format("%.1ft", n / 1e12)
 	elseif n >= 1e9  then return string.format("%.1fb", n / 1e9)
@@ -71,7 +71,7 @@ local function formatShort(n)
 	elseif n >= 1e3  then return string.format("%.1fk", n / 1e3)
 	else return tostring(n) end
 end
-local function formatCommas(n)
+local function q(n)
 	local s = tostring(math.floor(n))
 	local k
 	while true do
@@ -80,34 +80,34 @@ local function formatCommas(n)
 	end
 	return s
 end
-local window = TreeUILib.new({
-	Title = DisplayName .. " Is A Good Girl",
+local r = e.new({
+	Title = g .. " Is A Good Girl",
 	FooterText = "Made By Tree",
-	AvatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. LocalPlayer.UserId .. "&w=150&h=150",
+	AvatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. f.UserId .. "&w=150&h=150",
 	Width = 680,
 	Height = 460,
 })
-local mainTab = window:AddTab("Main")
-local killTab = window:AddTab("Killing")
-local tpTab = window:AddTab("TP")
-local spectateTab = window:AddTab("Spectate")
-local petsTab = window:AddTab("Pets")
-local statsTab = window:AddTab("Stats")
-local function removeDivider(tab)
+local s = r:AddTab("Main")
+local t = r:AddTab("Killing")
+local u = r:AddTab("TP")
+local v = r:AddTab("Spectate")
+local w = r:AddTab("Pets")
+local x = r:AddTab("Stats")
+local function y(tab)
 	for _, child in ipairs(tab.page:GetChildren()) do
 		if child:IsA("Frame") and child.Size.X.Offset == 1 then
 			child:Destroy()
 		end
 	end
 end
-removeDivider(mainTab)
-removeDivider(spectateTab)
-removeDivider(petsTab)
-local antiFling = false
-local humanoid  = nil
-local function applyAntiFling()
-	if not antiFling or not LocalPlayer.Character then return end
-	local hrp = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+y(s)
+y(v)
+y(w)
+local z = false
+local ba  = nil
+local function bb()
+	if not z or not f.Character then return end
+	local hrp = f.Character:FindFirstChild("HumanoidRootPart")
 	if not hrp then return end
 	local existing = hrp:FindFirstChild("BodyVelocity")
 	if existing and existing.MaxForce == Vector3.new(100000, 0, 100000) then
@@ -119,49 +119,48 @@ local function applyAntiFling()
 	bv.P = 1250
 	bv.Parent = hrp
 end
-local function removeAntiFling()
-	if not LocalPlayer.Character then return end
-	local hrp = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+local function bc()
+	if not f.Character then return end
+	local hrp = f.Character:FindFirstChild("HumanoidRootPart")
 	if not hrp then return end
-
 	local existing = hrp:FindFirstChild("BodyVelocity")
 	if existing and existing.MaxForce == Vector3.new(100000, 0, 100000) then
 		existing:Destroy()
 	end
 end
-mainTab:AddToggle("Anti Fling", function(state)
-	antiFling = state
-	if state then applyAntiFling() else removeAntiFling() end
+s:AddToggle("Anti Fling", function(state)
+	z = state
+	if state then bb() else bc() end
 end)
-local waterPart = Instance.new("Part")
-waterPart.Name = "WalkOnWaterPart"
-waterPart.Size = Vector3.new(4, 0.1, 4)
-waterPart.Transparency = 1
-waterPart.Anchored = true
-waterPart.CanCollide = false
-waterPart.CanTouch = false
-waterPart.CanQuery = false
-waterPart.Parent = workspace
-local waterConn
-mainTab:AddToggle("Walk On Water", function(state)
-	if waterConn then
-		waterConn:Disconnect()
-		waterConn = nil
+local bd = Instance.new("Part")
+bd.Name = "WalkOnWaterPart"
+bd.Size = Vector3.new(4, 0.1, 4)
+bd.Transparency = 1
+bd.Anchored = true
+bd.CanCollide = false
+bd.CanTouch = false
+bd.CanQuery = false
+bd.Parent = workspace
+local be
+s:AddToggle("Walk On Water", function(state)
+	if be then
+		be:Disconnect()
+		be = nil
 	end
-	waterPart.CanCollide = state
+	bd.CanCollide = state
 	if state then
-		waterConn = RunService.RenderStepped:Connect(function()
-			local hrp = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		be = b.RenderStepped:Connect(function()
+			local hrp = f.Character and f.Character:FindFirstChild("HumanoidRootPart")
 			if hrp then
-				waterPart.CFrame = CFrame.new(hrp.Position.X, -9.5, hrp.Position.Z)
+				bd.CFrame = CFrame.new(hrp.Position.X, -9.5, hrp.Position.Z)
 			end
 		end)
 	else
-		waterPart.CanCollide = false
-		waterPart.Position   = Vector3.new(0, -10000, 0)
+		bd.CanCollide = false
+		bd.Position   = Vector3.new(0, -10000, 0)
 	end
 end)
-mainTab:AddButton("Anti-Lag", function()
+s:AddButton("Anti-Lag", function()
 	local terrain = workspace:FindFirstChildWhichIsA("Terrain")
 	if terrain then
 		terrain.WaterWaveSize = 0
@@ -169,10 +168,10 @@ mainTab:AddButton("Anti-Lag", function()
 		terrain.WaterReflectance = 0
 		terrain.WaterTransparency = 1
 	end
-	Lighting.ClockTime = 0
-	Lighting.GlobalShadows = false
-	Lighting.FogEnd = 9e9
-	Lighting.FogStart = 9e9
+	c.ClockTime = 0
+	c.GlobalShadows = false
+	c.FogEnd = 9e9
+	c.FogStart = 9e9
 	settings().Rendering.QualityLevel = 1
 	for _, v in pairs(game:GetDescendants()) do
 		if v:IsA("BasePart") then
@@ -183,80 +182,80 @@ mainTab:AddButton("Anti-Lag", function()
 			v.Transparency = 1
 			v.Texture      = ""
 		elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-			v.Lifetime = NumberRange.new(0)
+			v.Enabled = NumberRange.new(0)
 		end
 	end
-	for _, v in pairs(Lighting:GetDescendants()) do
+	for _, v in pairs(c:GetDescendants()) do
 		if v:IsA("PostEffect") then
 			v.Enabled = false
 		end
 	end
 end)
-local killBlackConn
-killTab:AddToggle("Kill Blacklist", function(state)
+local bf
+t:AddToggle("Kill", function(state)
 	_G.killBlacklistedOnly = state
 	if state then
-		if not killBlackConn then
-			killBlackConn = RunService.Heartbeat:Connect(function()
+		if not bf then
+			bf = b.Heartbeat:Connect(function()
 				if not _G.killBlacklistedOnly then return end
-				for _, plr in ipairs(Players:GetPlayers()) do
-					if plr ~= LocalPlayer and isBlacklisted(plr) then
-						killPlayer(plr)
+				for _, plr in ipairs(a:GetPlayers()) do
+					if plr ~= f and i(plr) then
+						o(plr)
 					end
 				end
 			end)
 		end
 	else
-		if killBlackConn then
-			killBlackConn:Disconnect()
-			killBlackConn = nil
+		if bf then
+			bf:Disconnect()
+			bf = nil
 		end
 	end
 end)
-local killWatchConn
-killTab:AddToggle("Kill Watchlist", function(state)
+local bg
+t:AddToggle("Kill Watchlist", function(state)
 	_G.killWatchlisted = state
 	if state then
-		if not killWatchConn then
-			killWatchConn = RunService.Heartbeat:Connect(function()
+		if not bg then
+			bg = b.Heartbeat:Connect(function()
 				if not _G.killWatchlisted then return end
-				for _, plr in ipairs(Players:GetPlayers()) do
-					if plr ~= LocalPlayer and isWatchlisted(plr) and isAlive(plr) then
-						killPlayer(plr)
+				for _, plr in ipairs(a:GetPlayers()) do
+					if plr ~= f and k(plr) and m(plr) then
+						o(plr)
 					end
 				end
 			end)
 		end
 	else
-		if killWatchConn then
-			killWatchConn:Disconnect()
-			killWatchConn = nil
+		if bg then
+			bg:Disconnect()
+			bg = nil
 		end
 	end
 end)
-local blacklistButtons = {}
-local function refreshBlacklistList()
-	for _, btn in ipairs(blacklistButtons) do
+local bh = {}
+local function bi()
+	for _, btn in ipairs(bh) do
 		btn:Destroy()
 	end
-	table.clear(blacklistButtons)
-	for _, plr in ipairs(Players:GetPlayers()) do
-		if plr ~= LocalPlayer then
-			local btn = killTab:AddButton(plr.DisplayName, function()
-				if not isBlacklisted(plr) then
+	table.clear(bh)
+	for _, plr in ipairs(a:GetPlayers()) do
+		if plr ~= f then
+			local btn = t:AddButton(plr.DisplayName, function()
+				if not i(plr) then
 					table.insert(_G.blacklistedPlayers, plr.Name)
 				end
 			end, true)
-			table.insert(blacklistButtons, btn)
+			table.insert(bh, btn)
 		end
 	end
 end
-refreshBlacklistList()
-local blacklistLabel = killTab:AddSectionLabel("Blacklist: None")
-killTab:AddButton("Clear Blacklist", function()
+bi()
+local bj = t:AddSectionLabel("Blacklist: None")
+t:AddButton("Clear Blacklist", function()
 	_G.blacklistedPlayers = {}
 end)
-killTab:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
+t:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
 	text = text:match("^%s*(.-)%s*$")
 	if text == "" then return end
 	for _, existing in ipairs(_G.watchlistedPlayers) do
@@ -264,39 +263,39 @@ killTab:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
 	end
 	table.insert(_G.watchlistedPlayers, text)
 end)
-local watchLabel = killTab:AddSectionLabel("Watchlist: None")
-killTab:AddButton("Clear Watchlist", function()
+local bk = t:AddSectionLabel("Watchlist: None")
+t:AddButton("Clear Watchlist", function()
 	_G.watchlistedPlayers = {}
 end)
 task.spawn(function()
 	while true do
-		blacklistLabel.Text = #_G.blacklistedPlayers == 0 and "Blacklist: None" or "Blacklist: " .. table.concat(_G.blacklistedPlayers, ", ")
-		watchLabel.Text = #_G.watchlistedPlayers == 0 and "Watchlist: None" or "Watchlist: " .. table.concat(_G.watchlistedPlayers, ", ")
+		bj.Text = #_G.blacklistedPlayers == 0 and "Blacklist: None" or "Blacklist: " .. table.concat(_G.blacklistedPlayers, ", ")
+		bk.Text = #_G.watchlistedPlayers == 0 and "Watchlist: None" or "Watchlist: " .. table.concat(_G.watchlistedPlayers, ", ")
 		task.wait(0.01)
 	end
 end)
-local killTpConn
-tpTab:AddToggle("Kill TpList", function(state)
+local bl
+u:AddToggle("Kill TpList", function(state)
 	_G.killTpListed = state
 	if state then
-		if not killTpConn then
-			killTpConn = RunService.Heartbeat:Connect(function()
+		if not bl then
+			bl = b.Heartbeat:Connect(function()
 				if not _G.killTpListed then return end
-				local char = getChar()
+				local char = l()
 				local hrp  = char and char:FindFirstChild("HumanoidRootPart")
 				if not hrp then return end
 				for _, name in ipairs(_G.tpListedPlayers) do
 					local target = nil
-					for _, plr in ipairs(Players:GetPlayers()) do
+					for _, plr in ipairs(a:GetPlayers()) do
 						if plr.Name:lower() == name:lower() then
 							target = plr
 							break
 						end
 					end
-					if target and isAlive(target) then
+					if target and m(target) then
 						local oldCFrame = hrp.CFrame
 						hrp.CFrame = target.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 2)
-						punch()
+						n()
 						local hum = target.Character:FindFirstChildOfClass("Humanoid")
 						if hum then
 							hum.Died:Once(function()
@@ -312,149 +311,149 @@ tpTab:AddToggle("Kill TpList", function(state)
 			end)
 		end
 	else
-		if killTpConn then
-			killTpConn:Disconnect()
-			killTpConn = nil
+		if bl then
+			bl:Disconnect()
+			bl = nil
 		end
 	end
 end)
-local tpButtons = {}
-local function refreshTpList()
-	for _, btn in ipairs(tpButtons) do
+local bm = {}
+local function bn()
+	for _, btn in ipairs(bm) do
 		btn:Destroy()
 	end
-	table.clear(tpButtons)
-	for _, plr in ipairs(Players:GetPlayers()) do
-		if plr ~= LocalPlayer then
-			local btn = tpTab:AddButton(plr.DisplayName, function()
-				if not isTpListed(plr) then
+	table.clear(bm)
+	for _, plr in ipairs(a:GetPlayers()) do
+		if plr ~= f then
+			local btn = u:AddButton(plr.DisplayName, function()
+				if not j(plr) then
 					table.insert(_G.tpListedPlayers, plr.Name)
 				end
 			end, true)
-			table.insert(tpButtons, btn)
+			table.insert(bm, btn)
 		end
 	end
 end
-refreshTpList()
-local tpLabel = tpTab:AddSectionLabel("TpList: None")
-tpTab:AddButton("Clear TpList", function()
+bn()
+local bo = u:AddSectionLabel("TpList: None")
+u:AddButton("Clear TpList", function()
 	_G.tpListedPlayers = {}
 end)
 task.spawn(function()
 	while true do
-		tpLabel.Text = #_G.tpListedPlayers == 0 and "TpList: None" or "TpList: " .. table.concat(_G.tpListedPlayers, ", ")
+		bo.Text = #_G.tpListedPlayers == 0 and "TpList: None" or "TpList: " .. table.concat(_G.tpListedPlayers, ", ")
 		task.wait(0.01)
 	end
 end)
-local spectateTarget = nil
-local isSpectating   = false
-local function stopSpectate()
-	if LocalPlayer.Character then
-		local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+local bp = nil
+local bq = false
+local function br()
+	if f.Character then
+		local hum = f.Character:FindFirstChildOfClass("Humanoid")
 		if hum then
-			camera.CameraSubject = hum
-			camera.CameraType = Enum.CameraType.Custom
+			h.CameraSubject = hum
+			h.CameraType = Enum.CameraType.Custom
 		end
 	end
-	isSpectating   = false
-	spectateTarget = nil
+	bq = false
+	bp = nil
 end
-local function startSpectate(plr)
+local function bs(plr)
 	if not plr or not plr.Character then return end
 	local hum = plr.Character:FindFirstChildOfClass("Humanoid")
 	if hum then
-		camera.CameraSubject = hum
-		spectateTarget = plr
-		isSpectating = true
+		h.CameraSubject = hum
+		bp = plr
+		bq = true
 	end
 end
-local spectateButtons = {}
-local function refreshSpectateList()
-	for _, btn in ipairs(spectateButtons) do
+local bt = {}
+local function bu()
+	for _, btn in ipairs(bt) do
 		btn:Destroy()
 	end
-	table.clear(spectateButtons)
-	for _, plr in ipairs(Players:GetPlayers()) do
-		if plr ~= LocalPlayer then
-			local btn = spectateTab:AddButton(plr.DisplayName, function()
-				if isSpectating and spectateTarget == plr then
-					stopSpectate()
+	table.clear(bt)
+	for _, plr in ipairs(a:GetPlayers()) do
+		if plr ~= f then
+			local btn = v:AddButton(plr.DisplayName, function()
+				if bq and bp == plr then
+					br()
 				else
-					startSpectate(plr)
+					bs(plr)
 				end
 			end)
-			table.insert(spectateButtons, btn)
+			table.insert(bt, btn)
 		end
 	end
 end
-refreshSpectateList()
-local petsFolder    = LocalPlayer:WaitForChild("petsFolder"):WaitForChild("Unique")
-local equipPetEvent = ReplicatedStorage:WaitForChild("rEvents"):WaitForChild("equipPetEvent")
-petsTab:AddButton("Equip Wild Wizards", function()
-	for _, pet in ipairs(petsFolder:GetChildren()) do
+bu()
+local bv = f:WaitForChild("petsFolder"):WaitForChild("Unique")
+local bw = d:WaitForChild("rEvents"):WaitForChild("equipPetEvent")
+w:AddButton("Equip Wild Wizards", function()
+	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name ~= "Wild Wizard" then
-			equipPetEvent:FireServer("unequipPet", pet)
+			bw:FireServer("unequipPet", pet)
 		end
 	end
 	local count = 0
-	for _, pet in ipairs(petsFolder:GetChildren()) do
+	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name == "Wild Wizard" and count < 8 then
-			equipPetEvent:FireServer("unequipPet", pet)
-			equipPetEvent:FireServer("equipPet", pet)
+			bw:FireServer("unequipPet", pet)
+			bw:FireServer("equipPet", pet)
 			count += 1
 		end
 	end
 end)
-petsTab:AddButton("Equip Mighty Monsters", function()
-	for _, pet in ipairs(petsFolder:GetChildren()) do
+w:AddButton("Equip Mighty Monsters", function()
+	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name ~= "Mighty Monster" then
-			equipPetEvent:FireServer("unequipPet", pet)
+			bw:FireServer("unequipPet", pet)
 		end
 	end
 	local count = 0
-	for _, pet in ipairs(petsFolder:GetChildren()) do
+	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name == "Mighty Monster" and count < 8 then
-			equipPetEvent:FireServer("unequipPet", pet)
-			equipPetEvent:FireServer("equipPet", pet)
+			bw:FireServer("unequipPet", pet)
+			bw:FireServer("equipPet", pet)
 			count += 1
 		end
 	end
 end)
-local packSpam = false
-petsTab:AddToggle("Pack Spam WWS/MMS", function(state)
-	packSpam = state
-	if not packSpam then return end
+local bx = false
+w:AddToggle("Pack Spam WWS/MMS", function(state)
+	bx = state
+	if not bx then return end
 	task.spawn(function()
-		while packSpam do
-			for _, pet in ipairs(petsFolder:GetChildren()) do
-				if not packSpam then break end
+		while bx do
+			for _, pet in ipairs(bv:GetChildren()) do
+				if not bx then break end
 				if pet.Name == "Mighty Monster" then
-					equipPetEvent:FireServer("unequipPet", pet)
+					bw:FireServer("unequipPet", pet)
 				end
 			end
 			local count = 0
-			for _, pet in ipairs(petsFolder:GetChildren()) do
-				if not packSpam then break end
+			for _, pet in ipairs(bv:GetChildren()) do
+				if not bx then break end
 				if pet.Name == "Wild Wizard" and count < 8 then
-					equipPetEvent:FireServer("unequipPet", pet)
-					equipPetEvent:FireServer("equipPet", pet)
+					bw:FireServer("unequipPet", pet)
+					bw:FireServer("equipPet", pet)
 					count += 1
 				end
 			end
 			task.wait(0.15)
-			if not packSpam then break end
-			for _, pet in ipairs(petsFolder:GetChildren()) do
-				if not packSpam then break end
+			if not bx then break end
+			for _, pet in ipairs(bv:GetChildren()) do
+				if not bx then break end
 				if pet.Name == "Wild Wizard" then
-					equipPetEvent:FireServer("unequipPet", pet)
+					bw:FireServer("unequipPet", pet)
 				end
 			end
 			count = 0
-			for _, pet in ipairs(petsFolder:GetChildren()) do
-				if not packSpam then break end
+			for _, pet in ipairs(bv:GetChildren()) do
+				if not bx then break end
 				if pet.Name == "Mighty Monster" and count < 8 then
-					equipPetEvent:FireServer("unequipPet", pet)
-					equipPetEvent:FireServer("equipPet", pet)
+					bw:FireServer("unequipPet", pet)
+					bw:FireServer("equipPet", pet)
 					count += 1
 				end
 			end
@@ -462,18 +461,18 @@ petsTab:AddToggle("Pack Spam WWS/MMS", function(state)
 		end
 	end)
 end)
-local mmSpam = false
-petsTab:AddToggle("Pack Spam MM", function(state)
-	mmSpam = state
-	if not mmSpam then return end
+local by = false
+w:AddToggle("Pack Spam MM", function(state)
+	by = state
+	if not by then return end
 	task.spawn(function()
-		while mmSpam do
+		while by do
 			local count = 0
-			for _, pet in ipairs(petsFolder:GetChildren()) do
-				if not mmSpam then break end
+			for _, pet in ipairs(bv:GetChildren()) do
+				if not by then break end
 				if pet.Name == "Mighty Monster" and count < 8 then
-					equipPetEvent:FireServer("unequipPet", pet)
-					equipPetEvent:FireServer("equipPet", pet)
+					bw:FireServer("unequipPet", pet)
+					bw:FireServer("equipPet", pet)
 					count += 1
 				end
 			end
@@ -481,51 +480,51 @@ petsTab:AddToggle("Pack Spam MM", function(state)
 		end
 	end)
 end)
-local selectedStatsPlayer = nil
-local statsButtons = {}
-local function refreshStatsList()
-	for _, btn in ipairs(statsButtons) do
+local bz = nil
+local ca = {}
+local function cb()
+	for _, btn in ipairs(ca) do
 		btn:Destroy()
 	end
-	table.clear(statsButtons)
-	for _, plr in ipairs(Players:GetPlayers()) do
-		local btn = statsTab:AddButton(plr.DisplayName, function()
-			selectedStatsPlayer = plr
+	table.clear(ca)
+	for _, plr in ipairs(a:GetPlayers()) do
+		local btn = x:AddButton(plr.DisplayName, function()
+			bz = plr
 		end, true)
-		table.insert(statsButtons, btn)
+		table.insert(ca, btn)
 	end
 end
-refreshStatsList()
-local nameLabel = statsTab:AddSectionLabel("Name: N/A")
-local strengthLabel = statsTab:AddSectionLabel("Strength: N/A")
-local durabilityLabel = statsTab:AddSectionLabel("Durability: N/A")
-local function updateStats(plr)
+cb()
+local cc = x:AddSectionLabel("Name: N/A")
+local cd = x:AddSectionLabel("Strength: N/A")
+local ce = x:AddSectionLabel("Durability: N/A")
+local function cf(plr)
 	if not plr then return end
-	nameLabel.Text = "Name: " .. plr.DisplayName
+	cc.Text = "Name: " .. plr.DisplayName
 	if not plr:FindFirstChild("leaderstats") then return end
 	local function setStat(label, name, key)
 		local val = plr.leaderstats:FindFirstChild(key) or plr:FindFirstChild(key)
 		if val then
-			label.Text = string.format("%s: %s (%s)", name, formatShort(val.Value), formatCommas(val.Value))
+			label.Text = string.format("%s: %s (%s)", name, p(val.Value), q(val.Value))
 		else
 			label.Text = name .. ": 0 (0)"
 		end
 	end
-	setStat(strengthLabel, "Strength", "Strength")
-	setStat(durabilityLabel, "Durability", "Durability")
+	setStat(cd, "Strength", "Strength")
+	setStat(ce, "Durability", "Durability")
 end
 task.spawn(function()
 	while true do
-		if selectedStatsPlayer then updateStats(selectedStatsPlayer) end
+		if bz then cf(bz) end
 		task.wait(0.01)
 	end
 end)
-local enemyHealthLabel = statsTab:AddSectionLabel("Enemy Health: N/A")
-local enemyDamageLabel = statsTab:AddSectionLabel("Enemy Damage: N/A")
-local yourHealthLabel = statsTab:AddSectionLabel("Your Health: N/A")
-local yourDamageLabel = statsTab:AddSectionLabel("Your Damage: N/A")
-local hitsLabel = statsTab:AddSectionLabel("Hits To Kill: N/A")
-local function getHealth(plr)
+local cg = x:AddSectionLabel("Enemy Health: N/A")
+local ch = x:AddSectionLabel("Enemy Damage: N/A")
+local ci = x:AddSectionLabel("Your Health: N/A")
+local cj = x:AddSectionLabel("Your Damage: N/A")
+local ck = x:AddSectionLabel("Hits To Kill: N/A")
+local function cl(plr)
 	if not plr then return 0 end
 	local dur = plr:FindFirstChild("Durability") or (plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("Durability"))
 	if not dur then return 0 end
@@ -544,7 +543,7 @@ local function getHealth(plr)
 	end
 	return dur.Value * mult
 end
-local function getDamage(plr)
+local function cm(plr)
 	if not plr or not plr:FindFirstChild("leaderstats") or not plr.leaderstats:FindFirstChild("Strength") then return 0 end
 	local base = plr.leaderstats.Strength.Value * (1/15)
 	local mult = 1
@@ -562,19 +561,19 @@ local function getDamage(plr)
 	end
 	return base * mult
 end
-local function updateCombat(plr)
+local function cn(plr)
 	if not plr then
-		enemyHealthLabel.Text = "Enemy Health: N/A"
-		enemyDamageLabel.Text = "Enemy Damage: N/A"
-		yourHealthLabel.Text = "Your Health: N/A"
-		yourDamageLabel.Text = "Your Damage: N/A"
-		hitsLabel.Text = "Hits To Kill: N/A"
+		cg.Text = "Enemy Health: N/A"
+		ch.Text = "Enemy Damage: N/A"
+		ci.Text = "Your Health: N/A"
+		cj.Text = "Your Damage: N/A"
+		ck.Text = "Hits To Kill: N/A"
 		return
 	end
-	local eHealth = getHealth(plr)
-	local eDamage = getDamage(plr)
-	local yHealth = getHealth(LocalPlayer)
-	local yDamage = getDamage(LocalPlayer)
+	local eHealth = cl(plr)
+	local eDamage = cm(plr)
+	local yHealth = cl(f)
+	local yDamage = cm(f)
 	local hits = "∞"
 	if yDamage > 0 then
 		local h = math.ceil(eHealth / yDamage)
@@ -582,48 +581,48 @@ local function updateCombat(plr)
 		elseif h < 1 then hits = "instant"
 		else hits = tostring(h) end
 	end
-	enemyHealthLabel.Text = string.format("Enemy Health: %s (%s)", formatShort(eHealth), formatCommas(eHealth))
-	enemyDamageLabel.Text = string.format("Enemy Damage: %s (%s)", formatShort(eDamage), formatCommas(eDamage))
-	yourHealthLabel.Text = string.format("Your Health: %s (%s)", formatShort(yHealth), formatCommas(yHealth))
-	yourDamageLabel.Text = string.format("Your Damage: %s (%s)", formatShort(yDamage), formatCommas(yDamage))
-	hitsLabel.Text = "Hits To Kill: " .. hits
+	cg.Text = string.format("Enemy Health: %s (%s)", p(eHealth), q(eHealth))
+	ch.Text = string.format("Enemy Damage: %s (%s)", p(eDamage), q(eDamage))
+	ci.Text = string.format("Your Health: %s (%s)", p(yHealth), q(yHealth))
+	cj.Text = string.format("Your Damage: %s (%s)", p(yDamage), q(yDamage))
+	ck.Text = "Hits To Kill: " .. hits
 end
 task.spawn(function()
 	while true do
-		updateCombat(selectedStatsPlayer)
+		cn(bz)
 		task.wait(0.01)
 	end
 end)
-LocalPlayer.CharacterAdded:Connect(function(char)
+f.CharacterAdded:Connect(function(char)
 	char:WaitForChild("HumanoidRootPart", 5)
-	humanoid = char:FindFirstChildOfClass("Humanoid")
-	if antiFling then applyAntiFling() end
+	ba = char:FindFirstChildOfClass("Humanoid")
+	if z then bb() end
 	local hum = char:WaitForChild("Humanoid", 3)
-	if hum then humanoid = hum end
+	if hum then ba = hum end
 	task.wait(0.05)
-	if isSpectating and spectateTarget then
-		startSpectate(spectateTarget)
+	if bq and bp then
+		bs(bp)
 	else
-		if humanoid then camera.CameraSubject = humanoid end
+		if ba then h.CameraSubject = ba end
 	end
 end)
-if LocalPlayer.Character then
-	humanoid = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+if f.Character then
+	ba = f.Character:FindFirstChildOfClass("Humanoid")
 end
-Players.PlayerAdded:Connect(function()
+a.PlayerAdded:Connect(function()
 	task.wait(0.01)
-	refreshBlacklistList()
-	refreshTpList()
-	refreshSpectateList()
-	refreshStatsList()
+	bi()
+	bn()
+	bu()
+	cb()
 end)
-Players.PlayerRemoving:Connect(function(plr)
+a.PlayerRemoving:Connect(function(plr)
 	task.wait(0.01)
-	if spectateTarget == plr then
-		stopSpectate()
+	if bp == plr then
+		br()
 	end
-	refreshBlacklistList()
-	refreshTpList()
-	refreshSpectateList()
-	refreshStatsList()
+	bi()
+	bn()
+	bu()
+	cb()
 end)
