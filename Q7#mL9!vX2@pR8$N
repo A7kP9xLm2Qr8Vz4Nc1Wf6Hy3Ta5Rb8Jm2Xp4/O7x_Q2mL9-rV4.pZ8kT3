@@ -7,7 +7,7 @@ local f = a.LocalPlayer
 local g = f.DisplayName
 local h = workspace.CurrentCamera
 _G.blacklistedPlayers = _G.blacklistedPlayers or {}
-_G.tpListedPlayers    = _G.tpListedPlayers or {}
+_G.tpListedPlayers = _G.tpListedPlayers or {}
 _G.watchlistedPlayers = _G.watchlistedPlayers or {}
 local function i(plr)
 	for _, name in ipairs(_G.blacklistedPlayers) do
@@ -81,16 +81,16 @@ local function q(n)
 	return s
 end
 local r = e.new({
-	Title = g .. " Is A Good Girl",
-	FooterText = "Made By Tree",
+	Title = g .. " Is Smol",
+	FooterText = "Credits: Tree",
 	AvatarImage = "rbxthumb://type=AvatarHeadShot&id=" .. f.UserId .. "&w=150&h=150",
-	Width = 680,
-	Height = 460,
+	Width = 600,
+	Height = 400
 })
-local s = r:AddTab("Main")
+local s = r:AddTab("Misc")
 local t = r:AddTab("Killing")
-local u = r:AddTab("TP")
-local v = r:AddTab("Spectate")
+local u = r:AddTab("Teleporting")
+local v = r:AddTab("Spectating")
 local w = r:AddTab("Pets")
 local x = r:AddTab("Stats")
 local function y(tab)
@@ -103,6 +103,37 @@ end
 y(s)
 y(v)
 y(w)
+s:AddButton("Anti Lag", function()
+	local terrain = workspace:FindFirstChildWhichIsA("Terrain")
+	if terrain then
+		terrain.WaterWaveSize = 0
+		terrain.WaterWaveSpeed = 0
+		terrain.WaterReflectance = 0
+		terrain.WaterTransparency = 1
+	end
+	c.ClockTime = 0
+	c.GlobalShadows = false
+	c.FogEnd = 9e9
+	c.FogStart = 9e9
+	settings().Rendering.QualityLevel = 1
+	for _, v in pairs(game:GetDescendants()) do
+		if v:IsA("BasePart") then
+			v.CastShadow  = false
+			v.Material    = Enum.Material.Plastic
+			v.Reflectance = 0
+		elseif v:IsA("Decal") then
+			v.Transparency = 1
+			v.Texture      = ""
+		elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+			v.Enabled = NumberRange.new(0)
+		end
+	end
+	for _, v in pairs(c:GetDescendants()) do
+		if v:IsA("PostEffect") then
+			v.Enabled = false
+		end
+	end
+end)
 local z = false
 local ba  = nil
 local function bb()
@@ -157,38 +188,7 @@ s:AddToggle("Walk On Water", function(state)
 		end)
 	else
 		bd.CanCollide = false
-		bd.Position   = Vector3.new(0, -10000, 0)
-	end
-end)
-s:AddButton("Anti-Lag", function()
-	local terrain = workspace:FindFirstChildWhichIsA("Terrain")
-	if terrain then
-		terrain.WaterWaveSize = 0
-		terrain.WaterWaveSpeed = 0
-		terrain.WaterReflectance = 0
-		terrain.WaterTransparency = 1
-	end
-	c.ClockTime = 0
-	c.GlobalShadows = false
-	c.FogEnd = 9e9
-	c.FogStart = 9e9
-	settings().Rendering.QualityLevel = 1
-	for _, v in pairs(game:GetDescendants()) do
-		if v:IsA("BasePart") then
-			v.CastShadow  = false
-			v.Material    = Enum.Material.Plastic
-			v.Reflectance = 0
-		elseif v:IsA("Decal") then
-			v.Transparency = 1
-			v.Texture      = ""
-		elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
-			v.Enabled = NumberRange.new(0)
-		end
-	end
-	for _, v in pairs(c:GetDescendants()) do
-		if v:IsA("PostEffect") then
-			v.Enabled = false
-		end
+		bd.Position = Vector3.new(0, -10000, 0)
 	end
 end)
 local bf
@@ -212,6 +212,32 @@ t:AddToggle("Kill", function(state)
 		end
 	end
 end)
+local bh = {}
+local function bi()
+	for _, btn in ipairs(bh) do
+		btn:Destroy()
+	end
+	table.clear(bh)
+	for _, plr in ipairs(a:GetPlayers()) do
+		if plr ~= f then
+			local btn = t:AddButton(plr.DisplayName, function()
+				if not i(plr) then
+					table.insert(_G.blacklistedPlayers, plr.Name)
+				end
+			end, true)
+			table.insert(bh, btn)
+		end
+	end
+end
+bi()
+t:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
+	text = text:match("^%s*(.-)%s*$")
+	if text == "" then return end
+	for _, existing in ipairs(_G.watchlistedPlayers) do
+		if existing:lower() == text:lower() then return end
+	end
+	table.insert(_G.watchlistedPlayers, text)
+end)
 local bg
 t:AddToggle("Kill Watchlist", function(state)
 	_G.killWatchlisted = state
@@ -233,35 +259,9 @@ t:AddToggle("Kill Watchlist", function(state)
 		end
 	end
 end)
-local bh = {}
-local function bi()
-	for _, btn in ipairs(bh) do
-		btn:Destroy()
-	end
-	table.clear(bh)
-	for _, plr in ipairs(a:GetPlayers()) do
-		if plr ~= f then
-			local btn = t:AddButton(plr.DisplayName, function()
-				if not i(plr) then
-					table.insert(_G.blacklistedPlayers, plr.Name)
-				end
-			end, true)
-			table.insert(bh, btn)
-		end
-	end
-end
-bi()
 local bj = t:AddSectionLabel("Blacklist: None")
 t:AddButton("Clear Blacklist", function()
 	_G.blacklistedPlayers = {}
-end)
-t:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
-	text = text:match("^%s*(.-)%s*$")
-	if text == "" then return end
-	for _, existing in ipairs(_G.watchlistedPlayers) do
-		if existing:lower() == text:lower() then return end
-	end
-	table.insert(_G.watchlistedPlayers, text)
 end)
 local bk = t:AddSectionLabel("Watchlist: None")
 t:AddButton("Clear Watchlist", function()
@@ -275,7 +275,7 @@ task.spawn(function()
 	end
 end)
 local bl
-u:AddToggle("Kill TpList", function(state)
+u:AddToggle("Kill Tp", function(state)
 	_G.killTpListed = state
 	if state then
 		if not bl then
