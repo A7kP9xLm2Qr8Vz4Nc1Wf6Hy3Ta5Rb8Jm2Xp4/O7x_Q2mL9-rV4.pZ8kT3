@@ -16,7 +16,7 @@ local e = {
 	textMuted = Color3.fromRGB(235, 210, 255),
 	divider = Color3.fromRGB(40, 25, 60),
 	font = Enum.Font.GothamBlack,
-	fontBody = Enum.Font.GothamBold
+	fontBody = Enum.Font.PermanentMarker
 }
 local f = 10
 local g = 7
