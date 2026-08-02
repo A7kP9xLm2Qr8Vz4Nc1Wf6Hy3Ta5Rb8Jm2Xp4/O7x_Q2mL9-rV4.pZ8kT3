@@ -15,7 +15,7 @@ local e = {
 	textSecondary = Color3.fromRGB(200, 160, 240),
 	textMuted = Color3.fromRGB(235, 210, 255),
 	divider = Color3.fromRGB(40, 25, 60),
-	font = , Enum.Font.PermanentMarker,
+	font = Enum.Font.PermanentMarker,
 	fontBody = Enum.Font.PermanentMarker
 }
 local f = 10
