@@ -1,8 +1,8 @@
-local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
-local CoreGui = game:GetService("CoreGui")
-local RunService = game:GetService("RunService")
-local theme = {
+local a = game:GetService("TweenService")
+local b = game:GetService("UserInputService")
+local c = game:GetService("CoreGui")
+local d = game:GetService("RunService")
+local e = {
 	background = Color3.fromRGB(14, 8, 22),
 	headerBackground = Color3.fromRGB(10, 4, 18),
 	sidebarBackground = Color3.fromRGB(8, 2, 16),
@@ -16,879 +16,877 @@ local theme = {
 	textMuted = Color3.fromRGB(235, 210, 255),
 	divider = Color3.fromRGB(40, 25, 60),
 	font = Enum.Font.PermanentMarker,
-	fontBody = Enum.Font.PermanentMarker,
+	fontBody = Enum.Font.PermanentMarker
 }
-local cornerRadius = 10
-local smallCorner = 7
-local minWidth = 420
-local minHeight = 300
-local headerHeight = 35
-local footerHeight = 50
-local timerHeight = 22
-local contentSplit = 0.55
-local dropdownOpen = "▾"
-local dropdownClosed = "▸"
-local function create(className, props)
-	local instance = Instance.new(className)
-	for key, value in pairs(props or {}) do
-		instance[key] = value
+local f = 10
+local g = 7
+local h = 420
+local i = 300
+local j = 35
+local k = 50
+local l = 22
+local m = 0.55
+local n = "▾"
+local o = "▸"
+local function p(ba, bb)
+	local bc = Instance.new(ba)
+	for bd, be in pairs(bb or {}) do
+		bc[bd] = be
 	end
-	return instance
+	return bc
 end
-local function addCorner(parent, radius)
-	return create("UICorner", {
-		Parent = parent,
-		CornerRadius = UDim.new(0, radius or smallCorner),
+local function q(bf, bg)
+	return p("UICorner", {
+		Parent = bf,
+		CornerRadius = UDim.new(0, bg or g)
 	})
 end
-local function addStroke(parent, color, thickness)
-	return create("UIStroke", {
-		Parent = parent,
-		Color = color or theme.accentStroke,
-		Thickness = thickness or 1.5,
+local function r(bh, bi, bj)
+	return p("UIStroke", {
+		Parent = bh,
+		Color = bi or e.accentStroke,
+		Thickness = bj or 1.5
 	})
 end
-local function formatTime(seconds)
-	seconds = math.max(0, math.floor(seconds))
-	local days = math.floor(seconds / 86400)
-	local hours = math.floor((seconds % 86400) / 3600)
-	local minutes = math.floor((seconds % 3600) / 60)
-	local secs = seconds % 60
-	return string.format("%dD / %dH / %dM / %dS", days, hours, minutes, secs)
+local function s(bk)
+	bk = math.max(0, math.floor(bk))
+	local bl = math.floor(bk / 86400)
+	local bm = math.floor((bk % 86400) / 3600)
+	local bn = math.floor((bk % 3600) / 60)
+	local bo = bk % 60
+	return string.format("%dD / %dH / %dM / %dS", bl, bm, bn, bo)
 end
-local library = {}
-library.__index = library
-function library.new(config)
-	config = config or {}
-	local self = setmetatable({}, library)
-	self.tabs = {}
-	self.tabOffsets = {}
-	self.selectedIndex = 1
-	self.dropdowns = {}
-	local screenGui = create("ScreenGui", {
-		Name = config.Name or "TreeUILib",
+local t = {}
+t.__index = t
+function t.new(bp)
+	bp = bp or {}
+	local bq = setmetatable({}, t)
+	bq.tabs = {}
+	bq.tabOffsets = {}
+	bq.selectedIndex = 1
+	bq.dropdowns = {}
+	local br = p("ScreenGui", {
+		Name = bp.Name or "e",
 		ResetOnSpawn = false,
-		Parent = CoreGui,
+		Parent = c
 	})
-	self.screenGui = screenGui
-	local toggleBtn = create("TextButton", {
-		Parent = screenGui,
+	bq.screenGui = br
+	local bs = p("TextButton", {
+		Parent = br,
 		Size = UDim2.new(0, 45, 0, 45),
 		Position = UDim2.new(0.05, 0, 0.1, 0),
-		BackgroundColor3 = theme.headerBackground,
+		BackgroundColor3 = e.headerBackground,
 		Text = "",
-		AutoButtonColor = false,
+		AutoButtonColor = false
 	})
-	addCorner(toggleBtn, 12)
-	create("UIGradient", {
-		Parent = toggleBtn,
+	q(bs, 12)
+	p("UIGradient", {
+		Parent = bs,
 		Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-			ColorSequenceKeypoint.new(1, Color3.new(0.75, 0.87, 0.93)),
+			ColorSequenceKeypoint.new(1, Color3.new(0.75, 0.87, 0.93))
 		}),
-		Rotation = 45,
+		Rotation = 45
 	})
-	local toggleStroke = addStroke(toggleBtn)
-	create("UIGradient", {
-		Parent = toggleStroke,
+	local bt = r(bs)
+	p("UIGradient", {
+		Parent = bt,
 		Color = ColorSequence.new({
 			ColorSequenceKeypoint.new(0, Color3.new(0.7, 0.9, 1)),
-			ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.5, 0.65)),
+			ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.5, 0.65))
 		}),
-		Rotation = 45,
+		Rotation = 45
 	})
-	create("TextLabel", {
-		Parent = toggleBtn,
+	p("TextLabel", {
+		Parent = bs,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
-		Text = config.ToggleLabel or "T",
-		Font = theme.font,
+		Text = bp.ToggleLabel or "T",
+		Font = e.font,
 		TextSize = 26,
-		TextColor3 = theme.textPrimary,
+		TextColor3 = e.textPrimary
 	})
-	local toggleDragging = false
-	local toggleDragStart
-	local toggleStartPos
-	local toggleMoved = false
-	toggleBtn.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			toggleDragging = true
-			toggleMoved = false
-			toggleDragStart = input.Position
-			toggleStartPos = toggleBtn.Position
+	local bu = false
+	local bv
+	local bw
+	local bx = false
+	bs.InputBegan:Connect(function(by)
+		if by.UserInputType == Enum.UserInputType.MouseButton1
+			or by.UserInputType == Enum.UserInputType.Touch then
+			bu = true
+			bx = false
+			bv = by.Position
+			bw = bs.Position
 		end
 	end)
-	toggleBtn.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			toggleDragging = false
+	bs.InputEnded:Connect(function(bz)
+		if bz.UserInputType == Enum.UserInputType.MouseButton1
+			or bz.UserInputType == Enum.UserInputType.Touch then
+			bu = false
 		end
 	end)
-	local width  = config.Width  or 680
-	local height = config.Height or 460
-	local panel = create("Frame", {
-		Parent = screenGui,
-		Size = UDim2.new(0, width, 0, height),
-		Position = UDim2.new(0.5, -width / 2, 0.5, -height / 2),
-		BackgroundColor3 = theme.background,
+	local ca = bp.Width or 680
+	local cb = bp.Height or 460
+	local cc = p("Frame", {
+		Parent = br,
+		Size = UDim2.new(0, ca, 0, cb),
+		Position = UDim2.new(0.5, -ca / 2, 0.5, -cb / 2),
+		BackgroundColor3 = e.background,
 		BorderSizePixel = 0,
 		Active = true,
 		ClipsDescendants = true,
-		Visible = true,
+		Visible = true
 	})
-	addCorner(panel, cornerRadius)
-	addStroke(panel)
-	self.panel = panel
-	local header = create("Frame", {
-		Parent = panel,
-		Size = UDim2.new(1, 0, 0, headerHeight),
+	q(cc, f)
+	r(cc)
+	bq.panel = cc
+	local cd = p("Frame", {
+		Parent = cc,
+		Size = UDim2.new(1, 0, 0, j),
 		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundColor3 = theme.headerBackground,
+		BackgroundColor3 = e.headerBackground
 	})
-	addCorner(header, cornerRadius)
-	create("TextLabel", {
-		Parent = header,
+	q(cd, f)
+	p("TextLabel", {
+		Parent = cd,
 		Size = UDim2.new(1, -10, 1, 0),
 		Position = UDim2.new(0, 8, 0, 0),
 		BackgroundTransparency = 1,
-		Text = config.Title or "Tree UI",
-		TextColor3 = theme.textPrimary,
-		Font = theme.font,
+		Text = bp.Title or "e",
+		TextColor3 = e.textPrimary,
+		Font = e.font,
 		TextSize = 14,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local sidebar = create("Frame", {
-		Parent = panel,
-		Size = UDim2.new(0, 140, 1, -(headerHeight + footerHeight + timerHeight)),
-		Position = UDim2.new(0, 0, 0, headerHeight),
-		BackgroundColor3 = theme.sidebarBackground,
+	local ce = p("Frame", {
+		Parent = cc,
+		Size = UDim2.new(0, 140, 1, -(j + k + l)),
+		Position = UDim2.new(0, 0, 0, j),
+		BackgroundColor3 = e.sidebarBackground
 	})
-	local indicator = create("Frame", {
-		Parent = sidebar,
+	local cf = p("Frame", {
+		Parent = ce,
 		Size = UDim2.new(0, 4, 0, 32),
 		Position = UDim2.new(0, 5, 0, 10),
-		BackgroundColor3 = theme.accentFill,
+		BackgroundColor3 = e.accentFill
 	})
-	addCorner(indicator, 2)
-	self.indicator = indicator
-	local tabList = create("ScrollingFrame", {
-		Parent = sidebar,
+	q(cf, 2)
+	bq.indicator = cf
+	local cg = p("ScrollingFrame", {
+		Parent = ce,
 		Size = UDim2.new(1, -5, 1, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 0,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		CanvasSize = UDim2.new(0, 0, 0, 0),
+		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
-	create("UIListLayout", { Parent = tabList, Padding = UDim.new(0, 5) })
-	create("UIPadding", { Parent = tabList, PaddingTop = UDim.new(0, 10) })
-	self.tabList = tabList
-	local content = create("Frame", {
-		Parent = panel,
-		Size = UDim2.new(1, -145, 1, -(headerHeight + footerHeight + timerHeight)),
-		Position = UDim2.new(0, 145, 0, headerHeight),
-		BackgroundTransparency = 1,
+	p("UIListLayout", { Parent = cg, Padding = UDim.new(0, 5) })
+	p("UIPadding", { Parent = cg, PaddingTop = UDim.new(0, 10) })
+	bq.tabList = cg
+	local ch = p("Frame", {
+		Parent = cc,
+		Size = UDim2.new(1, -145, 1, -(j + k + l)),
+		Position = UDim2.new(0, 145, 0, j),
+		BackgroundTransparency = 1
 	})
-	self.content = content
-	local footer = create("Frame", {
-		Parent = panel,
-		Size = UDim2.new(1, 0, 0, footerHeight),
-		Position = UDim2.new(0, 0, 1, -(footerHeight + timerHeight)),
-		BackgroundColor3 = theme.headerBackground,
+	bq.content = ch
+	local ci = p("Frame", {
+		Parent = cc,
+		Size = UDim2.new(1, 0, 0, k),
+		Position = UDim2.new(0, 0, 1, -(k + l)),
+		BackgroundColor3 = e.headerBackground
 	})
-	local avatar = create("ImageLabel", {
-		Parent = footer,
+	local cj = p("ImageLabel", {
+		Parent = ci,
 		Size = UDim2.new(0, 34, 0, 34),
 		Position = UDim2.new(0, 8, 0.5, -17),
-		BackgroundColor3 = theme.inputBackground,
-		Image = config.AvatarImage or "",
+		BackgroundColor3 = e.inputBackground,
+		Image = bp.AvatarImage or ""
 	})
-	addCorner(avatar, 17)
-	addStroke(avatar, theme.accentStroke, 1)
-	create("TextLabel", {
-		Parent = footer,
+	q(cj, 17)
+	r(cj, e.accentStroke, 1)
+	p("TextLabel", {
+		Parent = ci,
 		Size = UDim2.new(1, -58, 1, 0),
 		Position = UDim2.new(0, 50, 0, 0),
 		BackgroundTransparency = 1,
-		Text = config.FooterText or "",
-		TextColor3 = theme.textPrimary,
-		Font = theme.font,
+		Text = bp.FooterText or "",
+		TextColor3 = e.textPrimary,
+		Font = e.font,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local timerBar = create("Frame", {
-		Parent = panel,
-		Size = UDim2.new(1, 0, 0, timerHeight),
-		Position = UDim2.new(0, 0, 1, -timerHeight),
-		BackgroundColor3 = theme.accentSelected,
+	local ck = p("Frame", {
+		Parent = cc,
+		Size = UDim2.new(1, 0, 0, l),
+		Position = UDim2.new(0, 0, 1, -l),
+		BackgroundColor3 = e.accentSelected
 	})
-	addCorner(timerBar, cornerRadius)
-	local timerLabel = create("TextLabel", {
-		Parent = timerBar,
+	q(ck, f)
+	local cl = p("TextLabel", {
+		Parent = ck,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
 		Text = "",
-		TextColor3 = theme.textPrimary,
-		Font = theme.fontBody,
-		TextSize = 12,
+		TextColor3 = e.textPrimary,
+		Font = e.fontBody,
+		TextSize = 12
 	})
-	self.timerLabel = timerLabel
-	local startTime = os.clock()
-	function self:ResetTimer()
-		startTime = os.clock()
+	bq.timerLabel = cl
+	local cm = os.clock()
+	function bq:ResetTimer()
+		cm = os.clock()
 	end
-	timerLabel.Text = formatTime(0)
-	local elapsed = 0
-	RunService.Heartbeat:Connect(function(dt)
-		elapsed += dt
-		if elapsed >= 1 then
-			elapsed -= 1
-			timerLabel.Text = formatTime(os.clock() - startTime)
+	cl.Text = s(0)
+	local cn = 0
+	d.Heartbeat:Connect(function(co)
+		cn += co
+		if cn >= 1 then
+			cn -= 1
+			cl.Text = s(os.clock() - cm)
 		end
 	end)
-	local resizeHandle = create("TextButton", {
-		Parent = panel,
+	local cp = p("TextButton", {
+		Parent = cc,
 		Size = UDim2.new(0, 18, 0, 18),
 		Position = UDim2.new(1, -18, 1, -18),
-		BackgroundColor3 = theme.accentFill,
+		BackgroundColor3 = e.accentFill,
 		AutoButtonColor = false,
 		Text = "",
-		ZIndex = 10,
+		ZIndex = 10
 	})
-	addCorner(resizeHandle, 4)
-	local isOpen = true
-	toggleBtn.MouseButton1Click:Connect(function()
-		if toggleMoved then return end
-		isOpen = not isOpen
-		panel.Visible = isOpen
+	q(cp, 4)
+	local cq = true
+	bs.MouseButton1Click:Connect(function()
+		if bx then return end
+		cq = not cq
+		cc.Visible = cq
 	end)
-	self.Open = function()
-		isOpen = true
-		panel.Visible = true
+	bq.Open = function()
+		cq = true
+		cc.Visible = true
 	end
-	self.Close = function()
-		isOpen = false
-		panel.Visible = false
+	bq.Close = function()
+		cq = false
+		cc.Visible = false
 	end
-	local dragging, dragStart, startPos
-	local resizing, resizeStart, startSize
-	header.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragStart = input.Position
-			startPos = panel.Position
+	local cr, cs, ct
+	local cu, cv, cw
+	cd.InputBegan:Connect(function(cx)
+		if cx.UserInputType == Enum.UserInputType.MouseButton1
+			or cx.UserInputType == Enum.UserInputType.Touch then
+			cr = true
+			cs = cx.Position
+			ct = cc.Position
 		end
 	end)
-	header.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = false
+	cd.InputEnded:Connect(function(cy)
+		if cy.UserInputType == Enum.UserInputType.MouseButton1
+			or cy.UserInputType == Enum.UserInputType.Touch then
+			cr = false
 		end
 	end)
-	resizeHandle.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			resizing = true
-			resizeStart = input.Position
-			startSize = panel.Size
+	cp.InputBegan:Connect(function(cz)
+		if cz.UserInputType == Enum.UserInputType.MouseButton1
+			or cz.UserInputType == Enum.UserInputType.Touch then
+			cu = true
+			cv = cz.Position
+			cw = cc.Size
 		end
 	end)
-	resizeHandle.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			resizing = false
+	cp.InputEnded:Connect(function(da)
+		if da.UserInputType == Enum.UserInputType.MouseButton1
+			or da.UserInputType == Enum.UserInputType.Touch then
+			cu = false
 		end
 	end)
-	UserInputService.InputChanged:Connect(function(input)
-		if input.UserInputType ~= Enum.UserInputType.MouseMovement
-			and input.UserInputType ~= Enum.UserInputType.Touch then
+	b.InputChanged:Connect(function(db)
+		if db.UserInputType ~= Enum.UserInputType.MouseMovement
+			and db.UserInputType ~= Enum.UserInputType.Touch then
 			return
 		end
-		if dragging then
-			local delta = input.Position - dragStart
-			panel.Position = UDim2.new(
-				startPos.X.Scale, startPos.X.Offset + delta.X,
-				startPos.Y.Scale, startPos.Y.Offset + delta.Y
+		if cr then
+			local dc = db.Position - cs
+			cc.Position = UDim2.new(
+				ct.X.Scale, ct.X.Offset + dc.X,
+				ct.Y.Scale, ct.Y.Offset + dc.Y
 			)
-		elseif resizing then
-			local delta = input.Position - resizeStart
-			local newWidth  = math.max(minWidth,  startSize.X.Offset + delta.X)
-			local newHeight = math.max(minHeight, startSize.Y.Offset + delta.Y)
-			panel.Size = UDim2.new(startSize.X.Scale, newWidth, startSize.Y.Scale, newHeight)
-		elseif toggleDragging then
-			local delta = input.Position - toggleDragStart
-			if math.abs(delta.X) > 3 or math.abs(delta.Y) > 3 then
-				toggleMoved = true
+		elseif cu then
+			local dd = db.Position - cv
+			local de = math.max(h, cw.X.Offset + dd.X)
+			local df = math.max(i, cw.Y.Offset + dd.Y)
+			cc.Size = UDim2.new(cw.X.Scale, de, cw.Y.Scale, df)
+		elseif bu then
+			local dg = db.Position - bv
+			if math.abs(dg.X) > 3 or math.abs(dg.Y) > 3 then
+				bx = true
 			end
-			toggleBtn.Position = UDim2.new(
-				toggleStartPos.X.Scale, toggleStartPos.X.Offset + delta.X,
-				toggleStartPos.Y.Scale, toggleStartPos.Y.Offset + delta.Y
+			bs.Position = UDim2.new(
+				bw.X.Scale, bw.X.Offset + dg.X,
+				bw.Y.Scale, bw.Y.Offset + dg.Y
 			)
 		end
 	end)
-	return self
+	return bq
 end
-local tab = {}
-tab.__index = tab
-function library:AddTab(name)
-	local index = #self.tabs + 1
-	local tabButton = create("TextButton", {
+local dh = {}
+dh.__index = dh
+function t:AddTab(di)
+	local dj = #self.tabs + 1
+	local dk = p("TextButton", {
 		Parent = self.tabList,
 		Size = UDim2.new(1, -15, 0, 32),
-		BackgroundColor3 = theme.buttonBackground,
+		BackgroundColor3 = e.buttonBackground,
 		BackgroundTransparency = 1,
-		Text = "   " .. name,
-		TextColor3 = theme.textSecondary,
-		Font = theme.font,
+		Text = "   " .. di,
+		TextColor3 = e.textSecondary,
+		Font = e.font,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	addCorner(tabButton)
-	tabButton.MouseEnter:Connect(function()
-		if tabButton.BackgroundTransparency == 1 then
-			TweenService:Create(tabButton, TweenInfo.new(0.15), {
+	q(dk)
+	dk.MouseEnter:Connect(function()
+		if dk.BackgroundTransparency == 1 then
+			a:Create(dk, TweenInfo.new(0.15), {
 				BackgroundTransparency = 0,
-				BackgroundColor3 = Color3.fromRGB(20, 32, 44),
+				BackgroundColor3 = Color3.fromRGB(20, 32, 44)
 			}):Play()
 		end
 	end)
-	tabButton.MouseLeave:Connect(function()
-		if tabButton.TextColor3 ~= theme.textPrimary then
-			TweenService:Create(tabButton, TweenInfo.new(0.15), {
-				BackgroundTransparency = 1,
+	dk.MouseLeave:Connect(function()
+		if dk.TextColor3 ~= e.textPrimary then
+			a:Create(dk, TweenInfo.new(0.15), {
+				BackgroundTransparency = 1
 			}):Play()
 		end
 	end)
-	local page = create("Frame", {
+	local dl = p("Frame", {
 		Parent = self.content,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
-		Visible = index == 1,
+		Visible = dj == 1
 	})
-	local mainColumn = create("ScrollingFrame", {
-		Parent = page,
-		Size = UDim2.new(contentSplit, -4, 1, 0),
+	local dm = p("ScrollingFrame", {
+		Parent = dl,
+		Size = UDim2.new(m, -4, 1, 0),
 		Position = UDim2.new(0, 0, 0, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 4,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		CanvasSize = UDim2.new(0, 0, 0, 0),
+		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
-	create("UIListLayout", { Parent = mainColumn, Padding = UDim.new(0, 8) })
-	create("UIPadding", {
-		Parent = mainColumn,
+	p("UIListLayout", { Parent = dm, Padding = UDim.new(0, 8) })
+	p("UIPadding", {
+		Parent = dm,
 		PaddingTop = UDim.new(0, 8),
 		PaddingLeft = UDim.new(0, 8),
-		PaddingRight = UDim.new(0, 8),
+		PaddingRight = UDim.new(0, 8)
 	})
-	create("Frame", {
-		Parent = page,
+	p("Frame", {
+		Parent = dl,
 		Size = UDim2.new(0, 1, 1, -12),
-		Position = UDim2.new(contentSplit, 0, 0, 6),
-		BackgroundColor3 = theme.divider,
-		BorderSizePixel = 0,
+		Position = UDim2.new(m, 0, 0, 6),
+		BackgroundColor3 = e.divider,
+		BorderSizePixel = 0
 	})
-	local sideColumn = create("ScrollingFrame", {
-		Parent = page,
-		Size = UDim2.new(1 - contentSplit, -4, 1, 0),
-		Position = UDim2.new(contentSplit, 4, 0, 0),
+	local dn = p("ScrollingFrame", {
+		Parent = dl,
+		Size = UDim2.new(1 - m, -4, 1, 0),
+		Position = UDim2.new(m, 4, 0, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 4,
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		CanvasSize = UDim2.new(0, 0, 0, 0),
+		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
-	create("UIListLayout", { Parent = sideColumn, Padding = UDim.new(0, 8) })
-	create("UIPadding", {
-		Parent = sideColumn,
+	p("UIListLayout", { Parent = dn, Padding = UDim.new(0, 8) })
+	p("UIPadding", {
+		Parent = dn,
 		PaddingTop = UDim.new(0, 8),
 		PaddingLeft = UDim.new(0, 8),
-		PaddingRight = UDim.new(0, 8),
+		PaddingRight = UDim.new(0, 8)
 	})
-	table.insert(self.tabs, { Button = tabButton, Page = page })
-	table.insert(self.tabOffsets, 10 + (index - 1) * 37)
-	tabButton.MouseButton1Click:Connect(function()
-		self:SelectTab(index)
+	table.insert(self.tabs, { Button = dk, Page = dl })
+	table.insert(self.tabOffsets, 10 + (dj - 1) * 37)
+	dk.MouseButton1Click:Connect(function()
+		self:SelectTab(dj)
 	end)
 	return setmetatable({
-		page = page,
-		main = mainColumn,
-		side = sideColumn,
-		library = self,
-	}, tab)
+		page = dl,
+		main = dm,
+		side = dn,
+		library = self
+	}, dh)
 end
-function library:SelectTab(index)
-	self.selectedIndex = index
-	for i, tabData in ipairs(self.tabs) do
-		tabData.Page.Visible = (i == index)
-		if i == index then
-			TweenService:Create(tabData.Button, TweenInfo.new(0.15), {
+function t:SelectTab(do_)
+	self.selectedIndex = do_
+	for dp, dq in ipairs(self.tabs) do
+		dq.Page.Visible = (dp == do_)
+		if dp == do_ then
+			a:Create(dq.Button, TweenInfo.new(0.15), {
 				BackgroundTransparency = 0,
-				BackgroundColor3 = theme.accentSelected,
-				TextColor3 = theme.textPrimary,
+				BackgroundColor3 = e.accentSelected,
+				TextColor3 = e.textPrimary
 			}):Play()
 		else
-			TweenService:Create(tabData.Button, TweenInfo.new(0.15), {
+			a:Create(dq.Button, TweenInfo.new(0.15), {
 				BackgroundTransparency = 1,
-				TextColor3 = theme.textSecondary,
+				TextColor3 = e.textSecondary
 			}):Play()
 		end
 	end
-	TweenService:Create(self.indicator, TweenInfo.new(0.2), {
-		Position = UDim2.new(0, 5, 0, self.tabOffsets[index] or 10),
+	a:Create(self.indicator, TweenInfo.new(0.2), {
+		Position = UDim2.new(0, 5, 0, self.tabOffsets[do_] or 10)
 	}):Play()
 end
-function tab:AddSectionLabel(text, useSide)
-	local parent = useSide and self.side or self.main
-	return create("TextLabel", {
-		Parent = parent,
+function dh:AddSectionLabel(dr, ds)
+	local dt = ds and self.side or self.main
+	return p("TextLabel", {
+		Parent = dt,
 		Size = UDim2.new(1, 0, 0, 22),
 		BackgroundTransparency = 1,
-		Text = text,
-		TextColor3 = theme.accentFill,
-		Font = theme.fontBody,
+		Text = dr,
+		TextColor3 = e.accentFill,
+		Font = e.fontBody,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
 end
-function tab:AddButton(text, callback, useSide)
-	local parent = useSide and self.side or self.main
-	local button = create("TextButton", {
-		Parent = parent,
+function dh:AddButton(du, dv, dw)
+	local dx = dw and self.side or self.main
+	local dy = p("TextButton", {
+		Parent = dx,
 		Size = UDim2.new(1, 0, 0, 36),
-		BackgroundColor3 = theme.buttonBackground,
-		Text = "   " .. text,
-		TextColor3 = theme.textMuted,
-		Font = theme.fontBody,
+		BackgroundColor3 = e.buttonBackground,
+		Text = "   " .. du,
+		TextColor3 = e.textMuted,
+		Font = e.fontBody,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	addCorner(button)
-	addStroke(button, Color3.fromRGB(45, 62, 76), 1)
-
-	button.Activated:Connect(function()
-		if callback then callback() end
+	q(dy)
+	r(dy, Color3.fromRGB(45, 62, 76), 1)
+	dy.Activated:Connect(function()
+		if dv then dv() end
 	end)
-
-	return button
+	return dy
 end
-function tab:AddToggle(text, callback, useSide)
-	local parent = useSide and self.side or self.main
-	local button = create("TextButton", {
-		Parent = parent,
+function dh:AddToggle(dz, ea, eb)
+	local ec = eb and self.side or self.main
+	local ed = p("TextButton", {
+		Parent = ec,
 		Size = UDim2.new(1, 0, 0, 36),
-		BackgroundColor3 = theme.buttonBackground,
-		Text = "   " .. text,
-		TextColor3 = theme.textMuted,
-		Font = theme.fontBody,
+		BackgroundColor3 = e.buttonBackground,
+		Text = "   " .. dz,
+		TextColor3 = e.textMuted,
+		Font = e.fontBody,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	addCorner(button)
-	local box = create("Frame", {
-		Parent = button,
+	q(ed)
+	local ee = p("Frame", {
+		Parent = ed,
 		Size = UDim2.new(0, 16, 0, 16),
 		Position = UDim2.new(1, -28, 0.5, -8),
-		BackgroundColor3 = theme.inputBackground,
+		BackgroundColor3 = e.inputBackground
 	})
-	addCorner(box, 4)
-	local check = create("TextLabel", {
-		Parent = box,
+	q(ee, 4)
+	local ef = p("TextLabel", {
+		Parent = ee,
 		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = 1,
 		Text = "",
-		TextColor3 = theme.textPrimary,
-		Font = theme.font,
-		TextSize = 12,
+		TextColor3 = e.textPrimary,
+		Font = e.font,
+		TextSize = 12
 	})
-	local enabled = false
-	button.Activated:Connect(function()
-		enabled = not enabled
-		check.Text = enabled and "" or ""
-		box.BackgroundColor3 = enabled and theme.accentFill or theme.inputBackground
-		if callback then callback(enabled) end
+	local eg = false
+	ed.Activated:Connect(function()
+		eg = not eg
+		ef.Text = eg and "" or ""
+		ee.BackgroundColor3 = eg and e.accentFill or e.inputBackground
+		if ea then ea(eg) end
 	end)
-	return button
+	return ed
 end
-function tab:AddTextbox(label, placeholder, callback, useSide)
-	local parent = useSide and self.side or self.main
-	local container = create("Frame", {
-		Parent = parent,
+function dh:AddTextbox(eh, ei, ej, ek)
+	local el = ek and self.side or self.main
+	local em = p("Frame", {
+		Parent = el,
 		Size = UDim2.new(1, 0, 0, 36),
-		BackgroundColor3 = theme.buttonBackground,
+		BackgroundColor3 = e.buttonBackground
 	})
-	addCorner(container)
-	addStroke(container, Color3.fromRGB(45, 62, 76), 1)
-	create("TextLabel", {
-		Parent = container,
+	q(em)
+	r(em, Color3.fromRGB(45, 62, 76), 1)
+	p("TextLabel", {
+		Parent = em,
 		Size = UDim2.new(0.45, 0, 1, 0),
 		Position = UDim2.new(0, 10, 0, 0),
 		BackgroundTransparency = 1,
-		Text = label,
-		TextColor3 = theme.textMuted,
-		Font = theme.fontBody,
+		Text = eh,
+		TextColor3 = e.textMuted,
+		Font = e.fontBody,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local textBox = create("TextBox", {
-		Parent = container,
+	local en = p("TextBox", {
+		Parent = em,
 		Size = UDim2.new(0.5, -14, 0, 24),
 		Position = UDim2.new(0.5, 0, 0.5, -12),
-		BackgroundColor3 = theme.inputBackground,
-		TextColor3 = theme.textPrimary,
-		PlaceholderText = placeholder or "",
-		PlaceholderColor3 = theme.textSecondary,
-		Font = theme.fontBody,
+		BackgroundColor3 = e.inputBackground,
+		TextColor3 = e.textPrimary,
+		PlaceholderText = ei or "",
+		PlaceholderColor3 = e.textSecondary,
+		Font = e.fontBody,
 		TextSize = 12,
 		Text = "",
-		ClearTextOnFocus = false,
+		ClearTextOnFocus = false
 	})
-	addCorner(textBox, 5)
-	textBox.FocusLost:Connect(function(enterPressed)
-		if callback then callback(textBox.Text, enterPressed) end
+	q(en, 5)
+	en.FocusLost:Connect(function(eo)
+		if ej then ej(en.Text, eo) end
 	end)
-	return textBox
+	return en
 end
-function tab:AddSlider(label, min, max, default, callback, useSide)
-	local parent = useSide and self.side or self.main
-	min = min or 0
-	max = max or 100
-	default = math.clamp(default or min, min, max)
-	local container = create("Frame", {
-		Parent = parent,
+function dh:AddSlider(ep, eq, er, es, et, eu)
+	local ev = eu and self.side or self.main
+	eq = eq or 0
+	er = er or 100
+	es = math.clamp(es or eq, eq, er)
+	local ew = p("Frame", {
+		Parent = ev,
 		Size = UDim2.new(1, 0, 0, 52),
-		BackgroundColor3 = theme.buttonBackground,
+		BackgroundColor3 = e.buttonBackground
 	})
-	addCorner(container)
-	addStroke(container, Color3.fromRGB(45, 62, 76), 1)
-	create("TextLabel", {
-		Parent = container,
+	q(ew)
+	r(ew, Color3.fromRGB(45, 62, 76), 1)
+	p("TextLabel", {
+		Parent = ew,
 		Size = UDim2.new(1, -70, 0, 20),
 		Position = UDim2.new(0, 10, 0, 4),
 		BackgroundTransparency = 1,
-		Text = label,
-		TextColor3 = theme.textMuted,
-		Font = theme.fontBody,
+		Text = ep,
+		TextColor3 = e.textMuted,
+		Font = e.fontBody,
 		TextSize = 13,
-		TextXAlignment = Enum.TextXAlignment.Left,
+		TextXAlignment = Enum.TextXAlignment.Left
 	})
-	local valueBox = create("TextBox", {
-		Parent = container,
+	local ex = p("TextBox", {
+		Parent = ew,
 		Size = UDim2.new(0, 50, 0, 20),
 		Position = UDim2.new(1, -60, 0, 4),
-		BackgroundColor3 = theme.inputBackground,
-		TextColor3 = theme.textPrimary,
-		Font = theme.fontBody,
+		BackgroundColor3 = e.inputBackground,
+		TextColor3 = e.textPrimary,
+		Font = e.fontBody,
 		TextSize = 12,
-		Text = tostring(default),
-		ClearTextOnFocus = false,
+		Text = tostring(es),
+		ClearTextOnFocus = false
 	})
-	addCorner(valueBox, 5)
-	local track = create("Frame", {
-		Parent = container,
+	q(ex, 5)
+	local ey = p("Frame", {
+		Parent = ew,
 		Size = UDim2.new(1, -20, 0, 6),
 		Position = UDim2.new(0, 10, 1, -14),
-		BackgroundColor3 = theme.inputBackground,
+		BackgroundColor3 = e.inputBackground
 	})
-	addCorner(track, 3)
-	local fill = create("Frame", {
-		Parent = track,
+	q(ey, 3)
+	local ez = p("Frame", {
+		Parent = ey,
 		Size = UDim2.new(0, 0, 1, 0),
-		BackgroundColor3 = theme.accentFill,
+		BackgroundColor3 = e.accentFill
 	})
-	addCorner(fill, 3)
-	local thumb = create("Frame", {
-		Parent = track,
+	q(ez, 3)
+	local fa = p("Frame", {
+		Parent = ey,
 		Size = UDim2.new(0, 12, 0, 12),
 		Position = UDim2.new(0, -6, 0.5, -6),
-		BackgroundColor3 = theme.textPrimary,
-		ZIndex = 5,
+		BackgroundColor3 = e.textPrimary,
+		ZIndex = 5
 	})
-	addCorner(thumb, 6)
-	local current = default
-	local function setValue(value, skipText)
-		value = math.clamp(value, min, max)
-		current = value
-		local alpha = (max - min) == 0 and 0 or (value - min) / (max - min)
-		fill.Size = UDim2.new(alpha, 0, 1, 0)
-		thumb.Position = UDim2.new(alpha, -6, 0.5, -6)
-		if not skipText then
-			valueBox.Text = tostring(math.floor(value * 100) / 100)
+	q(fa, 6)
+	local fb = es
+	local function fc(fd, fe)
+		fd = math.clamp(fd, eq, er)
+		fb = fd
+		local ff = (er - eq) == 0 and 0 or (fd - eq) / (er - eq)
+		ez.Size = UDim2.new(ff, 0, 1, 0)
+		fa.Position = UDim2.new(ff, -6, 0.5, -6)
+		if not fe then
+			ex.Text = tostring(math.floor(fd * 100) / 100)
 		end
-		if callback then callback(value) end
+		if et then et(fd) end
 	end
-	setValue(default)
-	local sliding = false
-	local function updateFromX(x)
-		local alpha = (x - track.AbsolutePosition.X) / track.AbsoluteSize.X
-		setValue(min + alpha * (max - min))
+	fc(es)
+	local fg = false
+	local function fh(fi)
+		local fj = (fi - ey.AbsolutePosition.X) / ey.AbsoluteSize.X
+		fc(eq + fj * (er - eq))
 	end
-	track.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			sliding = true
-			updateFromX(input.Position.X)
+	ey.InputBegan:Connect(function(fk)
+		if fk.UserInputType == Enum.UserInputType.MouseButton1
+			or fk.UserInputType == Enum.UserInputType.Touch then
+			fg = true
+			fh(fk.Position.X)
 		end
 	end)
-	track.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			sliding = false
+	ey.InputEnded:Connect(function(fl)
+		if fl.UserInputType == Enum.UserInputType.MouseButton1
+			or fl.UserInputType == Enum.UserInputType.Touch then
+			fg = false
 		end
 	end)
-	UserInputService.InputChanged:Connect(function(input)
-		if sliding and (input.UserInputType == Enum.UserInputType.MouseMovement
-			or input.UserInputType == Enum.UserInputType.Touch) then
-			updateFromX(input.Position.X)
+	b.InputChanged:Connect(function(fm)
+		if fg and (fm.UserInputType == Enum.UserInputType.MouseMovement
+			or fm.UserInputType == Enum.UserInputType.Touch) then
+			fh(fm.Position.X)
 		end
 	end)
-	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1
-			or input.UserInputType == Enum.UserInputType.Touch then
-			sliding = false
+	b.InputEnded:Connect(function(fn)
+		if fn.UserInputType == Enum.UserInputType.MouseButton1
+			or fn.UserInputType == Enum.UserInputType.Touch then
+			fg = false
 		end
 	end)
-	valueBox.FocusLost:Connect(function()
-		local num = tonumber(valueBox.Text)
-		if num then
-			setValue(num, true)
-			valueBox.Text = tostring(current)
+	ex.FocusLost:Connect(function()
+		local fo = tonumber(ex.Text)
+		if fo then
+			fc(fo, true)
+			ex.Text = tostring(fb)
 		else
-			valueBox.Text = tostring(current)
+			ex.Text = tostring(fb)
 		end
 	end)
 	return {
-		Set = setValue,
-		Get = function() return current end,
+		Set = fc,
+		Get = function() return fb end
 	}
 end
-function tab:AddDropdown(title, options, useSide, multiSelect)
-	if useSide == nil then useSide = true end
-	local parent = useSide and self.side or self.main
-	local lib = self.library
-	local optionHeight = 24
-	local optionPad = 2
-	local maxHeight = 150
-	local container = create("Frame", {
-		Parent = parent,
+function dh:AddDropdown(fp, fq, fr, fs)
+	if fr == nil then fr = true end
+	local ft = fr and self.side or self.main
+	local fu = self.library
+	local fv = 24
+	local fw = 2
+	local fx = 150
+	local fy = p("Frame", {
+		Parent = ft,
 		Size = UDim2.new(1, 0, 0, 26),
 		BackgroundTransparency = 1,
 		AutomaticSize = Enum.AutomaticSize.Y,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	create("UIListLayout", { Parent = container, Padding = UDim.new(0, 4) })
-	local headerBtn = create("TextButton", {
-		Parent = container,
+	p("UIListLayout", { Parent = fy, Padding = UDim.new(0, 4) })
+	local fz = p("TextButton", {
+		Parent = fy,
 		Size = UDim2.new(1, 0, 0, 26),
-		BackgroundColor3 = theme.buttonBackground,
+		BackgroundColor3 = e.buttonBackground,
 		Text = "",
 		AutoButtonColor = false,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	addCorner(headerBtn)
-	local headerLabel = create("TextLabel", {
-		Parent = headerBtn,
+	q(fz)
+	local ga = p("TextLabel", {
+		Parent = fz,
 		Size = UDim2.new(1, -10, 1, 0),
 		Position = UDim2.new(0, 10, 0, 0),
 		BackgroundTransparency = 1,
-		Text = title .. "  " .. dropdownOpen,
-		TextColor3 = theme.accentFill,
-		Font = theme.fontBody,
+		Text = fp .. "  " .. n,
+		TextColor3 = e.accentFill,
+		Font = e.fontBody,
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	local closeFrame = create("Frame", {
-		Parent = container,
+	local gb = p("Frame", {
+		Parent = fy,
 		Size = UDim2.new(1, 0, 0, 20),
 		BackgroundTransparency = 1,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	local closeBtn = create("TextButton", {
-		Parent = closeFrame,
+	local gc = p("TextButton", {
+		Parent = gb,
 		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundColor3 = theme.inputBackground,
+		BackgroundColor3 = e.inputBackground,
 		Text = "Close  ×",
-		TextColor3 = theme.textSecondary,
-		Font = theme.fontBody,
+		TextColor3 = e.textSecondary,
+		Font = e.fontBody,
 		TextSize = 12,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	addCorner(closeBtn, 4)
-	local list = create("ScrollingFrame", {
-		Parent = container,
+	q(gc, 4)
+	local gd = p("ScrollingFrame", {
+		Parent = fy,
 		Size = UDim2.new(1, 0, 0, 0),
 		CanvasSize = UDim2.new(0, 0, 0, 0),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		ScrollBarThickness = 4,
-		BackgroundColor3 = theme.inputBackground,
+		BackgroundColor3 = e.inputBackground,
 		ClipsDescendants = true,
 		Visible = true,
-		ZIndex = 2,
+		ZIndex = 2
 	})
-	addCorner(list, 6)
-	create("UIListLayout", { Parent = list, Padding = UDim.new(0, optionPad) })
-	create("UIPadding", {
-		Parent = list,
+	q(gd, 6)
+	p("UIListLayout", { Parent = gd, Padding = UDim.new(0, fw) })
+	p("UIPadding", {
+		Parent = gd,
 		PaddingTop = UDim.new(0, 4),
 		PaddingBottom = UDim.new(0, 4),
 		PaddingLeft = UDim.new(0, 4),
-		PaddingRight = UDim.new(0, 4),
+		PaddingRight = UDim.new(0, 4)
 	})
-	local dropdown = {
-		frame = container,
-		content = list,
-		multiSelect = multiSelect and true or false,
+	local ge = {
+		frame = fy,
+		content = gd,
+		multiSelect = fs and true or false,
 		selected = {},
-		_options = {},
+		_options = {}
 	}
-	local isOpen = true
-	local function updateHeight()
-		local count = #dropdown._options
-		local h = 0
-		if count > 0 then
-			h = math.min(count * optionHeight + (count - 1) * optionPad + 8, maxHeight)
+	local gf = true
+	local function gg()
+		local gh = #ge._options
+		local gi = 0
+		if gh > 0 then
+			gi = math.min(gh * fv + (gh - 1) * fw + 8, fx)
 		end
-		list.Size = UDim2.new(1, 0, 0, h)
+		gd.Size = UDim2.new(1, 0, 0, gi)
 	end
-	local function setZIndex(z)
-		container.ZIndex = z
-		headerBtn.ZIndex = z
-		headerLabel.ZIndex = z
-		closeFrame.ZIndex = z
-		closeBtn.ZIndex = z
-		list.ZIndex = z
-		for _, child in ipairs(list:GetChildren()) do
-			if child:IsA("GuiObject") then
-				child.ZIndex = z
+	local function gj(gk)
+		fy.ZIndex = gk
+		fz.ZIndex = gk
+		ga.ZIndex = gk
+		gb.ZIndex = gk
+		gc.ZIndex = gk
+		gd.ZIndex = gk
+		for _, gl in ipairs(gd:GetChildren()) do
+			if gl:IsA("GuiObject") then
+				gl.ZIndex = gk
 			end
 		end
 	end
-	function dropdown:SetOpen(open)
-		isOpen = open
-		list.Visible = open
-		closeFrame.Visible = open
-		headerLabel.Text = title .. "  " .. (open and dropdownOpen or dropdownClosed)
-		setZIndex(open and 10 or 2)
-		if open and lib then
-			for _, other in ipairs(lib.dropdowns) do
-				if other ~= dropdown and other._IsExpanded and other._IsExpanded() then
-					other:SetOpen(false)
+	function ge:SetOpen(gm)
+		gf = gm
+		gd.Visible = gm
+		gb.Visible = gm
+		ga.Text = fp .. "  " .. (gm and n or o)
+		gj(gm and 10 or 2)
+		if gm and fu then
+			for _, gn in ipairs(fu.dropdowns) do
+				if gn ~= ge and gn._IsExpanded and gn._IsExpanded() then
+					gn:SetOpen(false)
 				end
 			end
 		end
 	end
-	dropdown._IsExpanded = function()
-		return isOpen
+	ge._IsExpanded = function()
+		return gf
 	end
-	function dropdown:AddOption(text, callback)
-		local optBtn = create("TextButton", {
-			Parent = list,
-			Size = UDim2.new(1, 0, 0, optionHeight),
+	function ge:AddOption(go, gp)
+		local gq = p("TextButton", {
+			Parent = gd,
+			Size = UDim2.new(1, 0, 0, fv),
 			BackgroundTransparency = 1,
-			Text = "  " .. text,
+			Text = "  " .. go,
 			TextColor3 = Color3.fromRGB(198, 214, 224),
 			Font = Enum.Font.Gotham,
 			TextSize = 12,
 			TextXAlignment = Enum.TextXAlignment.Left,
-			ZIndex = isOpen and 10 or 2,
-			AutoButtonColor = false,
+			ZIndex = gf and 10 or 2,
+			AutoButtonColor = false
 		})
-		local selected = false
-		local optionRef
-		local function refreshVisual()
-			if selected then
-				optBtn.BackgroundTransparency = 0
-				optBtn.BackgroundColor3 = theme.accentSelected
-				optBtn.TextColor3 = theme.textPrimary
-				optBtn.Text = (dropdown.multiSelect and "✓ " or "  ") .. text
+		local gr = false
+		local gs
+		local function gt()
+			if gr then
+				gq.BackgroundTransparency = 0
+				gq.BackgroundColor3 = e.accentSelected
+				gq.TextColor3 = e.textPrimary
+				gq.Text = (ge.multiSelect and "✓ " or "  ") .. go
 			else
-				optBtn.BackgroundTransparency = 1
-				optBtn.TextColor3 = Color3.fromRGB(198, 214, 224)
-				optBtn.Text = "  " .. text
+				gq.BackgroundTransparency = 1
+				gq.TextColor3 = Color3.fromRGB(198, 214, 224)
+				gq.Text = "  " .. go
 			end
 		end
-		local function setSelected(value)
-			selected = value
-			refreshVisual()
-			dropdown.selected[text] = value or nil
+		local function gu(gv)
+			gr = gv
+			gt()
+			ge.selected[go] = gv or nil
 		end
-		optBtn.MouseEnter:Connect(function()
-			if not selected then
-				optBtn.BackgroundTransparency = 0
-				optBtn.BackgroundColor3 = Color3.fromRGB(20, 32, 44)
+		gq.MouseEnter:Connect(function()
+			if not gr then
+				gq.BackgroundTransparency = 0
+				gq.BackgroundColor3 = Color3.fromRGB(20, 32, 44)
 			end
 		end)
-		optBtn.MouseLeave:Connect(function()
-			if not selected then
-				optBtn.BackgroundTransparency = 1
+		gq.MouseLeave:Connect(function()
+			if not gr then
+				gq.BackgroundTransparency = 1
 			end
 		end)
-		optBtn.Activated:Connect(function()
-			if dropdown.multiSelect then
-				setSelected(not selected)
-				if callback then callback(selected) end
+		gq.Activated:Connect(function()
+			if ge.multiSelect then
+				gu(not gr)
+				if gp then gp(gr) end
 			else
-				for _, opt in ipairs(dropdown._options) do
-					if opt ~= optionRef then
-						opt.SetSelected(false)
+				for _, gw in ipairs(ge._options) do
+					if gw ~= gs then
+						gw.SetSelected(false)
 					end
 				end
-				setSelected(true)
-				if callback then callback() end
+				gu(true)
+				if gp then gp() end
 			end
 		end)
-		optionRef = { Button = optBtn, Text = text, SetSelected = setSelected }
-		table.insert(dropdown._options, optionRef)
-		updateHeight()
-		return optBtn
+		gs = { Button = gq, Text = go, SetSelected = gu }
+		table.insert(ge._options, gs)
+		gg()
+		return gq
 	end
-	function dropdown:RemoveOption(button)
-		if not button then return end
-		for i, opt in ipairs(dropdown._options) do
-			if opt.Button == button then
-				dropdown.selected[opt.Text] = nil
-				table.remove(dropdown._options, i)
+	function ge:RemoveOption(gx)
+		if not gx then return end
+		for gy, gz in ipairs(ge._options) do
+			if gz.Button == gx then
+				ge.selected[gz.Text] = nil
+				table.remove(ge._options, gy)
 				break
 			end
 		end
-		button:Destroy()
-		updateHeight()
+		gx:Destroy()
+		gg()
 	end
-	function dropdown:Clear()
-		for _, child in ipairs(list:GetChildren()) do
-			if child:IsA("TextButton") then
-				child:Destroy()
+	function ge:Clear()
+		for _, ha in ipairs(gd:GetChildren()) do
+			if ha:IsA("TextButton") then
+				ha:Destroy()
 			end
 		end
-		dropdown._options = {}
-		dropdown.selected = {}
-		updateHeight()
+		ge._options = {}
+		ge.selected = {}
+		gg()
 	end
-	function dropdown:GetSelected()
-		local result = {}
-		for _, opt in ipairs(dropdown._options) do
-			if dropdown.selected[opt.Text] then
-				table.insert(result, opt.Text)
+	function ge:GetSelected()
+		local hb = {}
+		for _, hc in ipairs(ge._options) do
+			if ge.selected[hc.Text] then
+				table.insert(hb, hc.Text)
 			end
 		end
-		return result
+		return hb
 	end
-	headerBtn.Activated:Connect(function()
-		dropdown:SetOpen(not isOpen)
+	fz.Activated:Connect(function()
+		ge:SetOpen(not gf)
 	end)
-	closeBtn.Activated:Connect(function()
-		dropdown:SetOpen(false)
+	gc.Activated:Connect(function()
+		ge:SetOpen(false)
 	end)
-	if options then
-		for _, opt in ipairs(options) do
-			dropdown:AddOption(opt.Text, opt.Callback)
+	if fq then
+		for _, hd in ipairs(fq) do
+			ge:AddOption(hd.Text, hd.Callback)
 		end
 	end
-	if lib then
-		table.insert(lib.dropdowns, dropdown)
+	if fu then
+		table.insert(fu.dropdowns, ge)
 	end
-	dropdown:SetOpen(true)
-	return dropdown
+	ge:SetOpen(true)
+	return ge
 end
-return library
+return t
