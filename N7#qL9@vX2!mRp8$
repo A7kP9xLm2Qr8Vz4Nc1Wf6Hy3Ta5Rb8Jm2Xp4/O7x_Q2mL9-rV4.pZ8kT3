@@ -3,18 +3,18 @@ local b = game:GetService("UserInputService")
 local c = game:GetService("CoreGui")
 local d = game:GetService("RunService")
 local e = {
-	background = Color3.fromRGB(10, 6, 18),
-	headerBackground = Color3.fromRGB(7, 4, 14),
-	sidebarBackground = Color3.fromRGB(6, 3, 12),
-	buttonBackground = Color3.fromRGB(26, 15, 42),
-	inputBackground = Color3.fromRGB(18, 10, 32),
-	accentStroke = Color3.fromRGB(200, 70, 255),
-	accentFill = Color3.fromRGB(200, 70, 255),
-	accentSelected = Color3.fromRGB(55, 20, 85),
+	background = Color3.fromRGB(7, 4, 14),
+	headerBackground = Color3.fromRGB(4, 2, 10),
+	sidebarBackground = Color3.fromRGB(3, 1, 8),
+	buttonBackground = Color3.fromRGB(22, 10, 38),
+	inputBackground = Color3.fromRGB(14, 6, 26),
+	accentStroke = Color3.fromRGB(255, 55, 230),
+	accentFill = Color3.fromRGB(255, 55, 230),
+	accentSelected = Color3.fromRGB(70, 15, 95),
 	textPrimary = Color3.fromRGB(255, 255, 255),
-	textSecondary = Color3.fromRGB(195, 160, 240),
-	textMuted = Color3.fromRGB(230, 210, 255),
-	divider = Color3.fromRGB(48, 28, 70),
+	textSecondary = Color3.fromRGB(210, 155, 255),
+	textMuted = Color3.fromRGB(235, 205, 255),
+	divider = Color3.fromRGB(55, 25, 85),
 	font = Enum.Font.PermanentMarker,
 	fontBody = Enum.Font.PermanentMarker
 }
@@ -83,9 +83,9 @@ function t.new(bp)
 	p("UIGradient", {
 		Parent = bs,
 		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 90, 255)),
-			ColorSequenceKeypoint.new(0.45, Color3.fromRGB(200, 70, 255)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(110, 30, 210))
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 100, 255)),
+			ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 55, 230)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(140, 20, 220))
 		}),
 		Rotation = 45
 	})
@@ -93,9 +93,9 @@ function t.new(bp)
 	p("UIGradient", {
 		Parent = bt,
 		Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 140, 255)),
-			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(210, 80, 255)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(140, 40, 230))
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 160, 255)),
+			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 70, 240)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(160, 30, 230))
 		}),
 		Rotation = 45
 	})
@@ -364,7 +364,7 @@ function t:AddTab(dj)
 		if dl.BackgroundTransparency == 1 then
 			a:Create(dl, TweenInfo.new(0.15), {
 				BackgroundTransparency = 0,
-				BackgroundColor3 = Color3.fromRGB(35, 20, 55)
+				BackgroundColor3 = Color3.fromRGB(40, 15, 65)
 			}):Play()
 		end
 	end)
@@ -487,7 +487,7 @@ function di:AddButton(dv, dw, dx)
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
 	q(dz)
-	r(dz, Color3.fromRGB(60, 35, 90), 1)
+	r(dz, Color3.fromRGB(70, 25, 100), 1)
 	dz.Activated:Connect(function()
 		if dw then dw() end
 	end)
@@ -539,7 +539,7 @@ function di:AddTextbox(ei, ej, ek, el)
 		BackgroundColor3 = e.buttonBackground
 	})
 	q(en)
-	r(en, Color3.fromRGB(60, 35, 90), 1)
+	r(en, Color3.fromRGB(70, 25, 100), 1)
 	p("TextLabel", {
 		Parent = en,
 		Size = UDim2.new(0.45, 0, 1, 0),
@@ -581,7 +581,7 @@ function di:AddSlider(eq, er, es, et, eu, ev)
 		BackgroundColor3 = e.buttonBackground
 	})
 	q(ex)
-	r(ex, Color3.fromRGB(60, 35, 90), 1)
+	r(ex, Color3.fromRGB(70, 25, 100), 1)
 	p("TextLabel", {
 		Parent = ex,
 		Size = UDim2.new(1, -70, 0, 20),
@@ -808,7 +808,7 @@ function di:AddDropdown(fq, fr, fs, ft)
 			Size = UDim2.new(1, 0, 0, fw),
 			BackgroundTransparency = 1,
 			Text = "  " .. gp,
-			TextColor3 = Color3.fromRGB(200, 175, 235),
+			TextColor3 = Color3.fromRGB(210, 170, 255),
 			Font = Enum.Font.Gotham,
 			TextSize = 12,
 			TextXAlignment = Enum.TextXAlignment.Left,
@@ -825,7 +825,7 @@ function di:AddDropdown(fq, fr, fs, ft)
 				gr.Text = (gf.multiSelect and "✓ " or "  ") .. gp
 			else
 				gr.BackgroundTransparency = 1
-				gr.TextColor3 = Color3.fromRGB(200, 175, 235)
+				gr.TextColor3 = Color3.fromRGB(210, 170, 255)
 				gr.Text = "  " .. gp
 			end
 		end
@@ -837,7 +837,7 @@ function di:AddDropdown(fq, fr, fs, ft)
 		gr.MouseEnter:Connect(function()
 			if not gs then
 				gr.BackgroundTransparency = 0
-				gr.BackgroundColor3 = Color3.fromRGB(35, 20, 55)
+				gr.BackgroundColor3 = Color3.fromRGB(40, 15, 65)
 			end
 		end)
 		gr.MouseLeave:Connect(function()
