@@ -2,6 +2,7 @@ local a = game:GetService("TweenService")
 local b = game:GetService("UserInputService")
 local c = game:GetService("CoreGui")
 local d = game:GetService("RunService")
+
 local e = {
 	background = Color3.fromRGB(14, 8, 22),
 	headerBackground = Color3.fromRGB(10, 4, 18),
@@ -16,8 +17,9 @@ local e = {
 	textMuted = Color3.fromRGB(235, 210, 255),
 	divider = Color3.fromRGB(40, 25, 60),
 	font = Enum.Font.PermanentMarker,
-	fontBody = Enum.Font.PermanentMarker,
+	fontBody = Enum.Font.PermanentMarker
 }
+
 local f = 10
 local g = 7
 local h = 420
@@ -28,6 +30,7 @@ local l = 22
 local m = 0.55
 local n = "▾"
 local o = "▸"
+
 local function p(ba, bb)
 	local bc = Instance.new(ba)
 	for bd, be in pairs(bb or {}) do
@@ -35,12 +38,14 @@ local function p(ba, bb)
 	end
 	return bc
 end
+
 local function q(bf, bg)
 	return p("UICorner", {
 		Parent = bf,
 		CornerRadius = UDim.new(0, bg or g)
 	})
 end
+
 local function r(bh, bi, bj)
 	return p("UIStroke", {
 		Parent = bh,
@@ -48,6 +53,7 @@ local function r(bh, bi, bj)
 		Thickness = bj or 1.5
 	})
 end
+
 local function s(bk)
 	bk = math.max(0, math.floor(bk))
 	local bl = math.floor(bk / 86400)
@@ -56,8 +62,10 @@ local function s(bk)
 	local bo = bk % 60
 	return string.format("%dD / %dH / %dM / %dS", bl, bm, bn, bo)
 end
+
 local t = {}
 t.__index = t
+
 function t.new(bp)
 	bp = bp or {}
 	local bq = setmetatable({}, t)
@@ -342,8 +350,10 @@ function t.new(bp)
 	bq._cz = cz
 	return bq
 end
+
 local di = {}
 di.__index = di
+
 function t:AddTab(dj)
 	local dk = #self.tabs + 1
 	local dl = p("TextButton", {
@@ -438,6 +448,7 @@ function t:AddTab(dj)
 		library = self
 	}, di)
 end
+
 function t:SelectTab(dp)
 	self.selectedIndex = dp
 	for dq, dr in ipairs(self.tabs) do
@@ -459,6 +470,7 @@ function t:SelectTab(dp)
 		Position = UDim2.new(0, 5, 0, self.tabOffsets[dp] or 10)
 	}):Play()
 end
+
 function di:AddSectionLabel(ds, dt)
 	local du = dt and self.side or self.main
 	return p("TextLabel", {
@@ -472,6 +484,7 @@ function di:AddSectionLabel(ds, dt)
 		TextXAlignment = Enum.TextXAlignment.Left
 	})
 end
+
 function di:AddButton(dv, dw, dx)
 	local dy = dx and self.side or self.main
 	local dz = p("TextButton", {
@@ -491,6 +504,7 @@ function di:AddButton(dv, dw, dx)
 	end)
 	return dz
 end
+
 function di:AddToggle(ea, eb, ec)
 	local ed = ec and self.side or self.main
 	local ee = p("TextButton", {
@@ -529,6 +543,7 @@ function di:AddToggle(ea, eb, ec)
 	end)
 	return ee
 end
+
 function di:AddTextbox(ei, ej, ek, el)
 	local em = el and self.side or self.main
 	local en = p("Frame", {
@@ -568,6 +583,7 @@ function di:AddTextbox(ei, ej, ek, el)
 	end)
 	return eo
 end
+
 function di:AddSlider(eq, er, es, et, eu, ev)
 	local ew = ev and self.side or self.main
 	er = er or 0
@@ -681,6 +697,7 @@ function di:AddSlider(eq, er, es, et, eu, ev)
 		Get = function() return fc end
 	}
 end
+
 function di:AddDropdown(fq, fr, fs, ft)
 	if fs == nil then fs = true end
 	local fu = fs and self.side or self.main
@@ -910,4 +927,5 @@ function di:AddDropdown(fq, fr, fs, ft)
 	gf:SetOpen(true)
 	return gf
 end
+
 return t
