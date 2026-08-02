@@ -178,7 +178,8 @@ function t.new(bp)
 		Parent = ce,
 		Size = UDim2.new(1, -5, 1, 0),
 		BackgroundTransparency = 1,
-		ScrollBarThickness = 0,
+		ScrollBarThickness = 4,
+		ScrollBarImageColor3 = Color3.fromRGB(255, 40, 40),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
@@ -387,6 +388,7 @@ function t:AddTab(dj)
 		Position = UDim2.new(0, 0, 0, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 4,
+		ScrollBarImageColor3 = Color3.fromRGB(255, 40, 40),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
@@ -410,6 +412,7 @@ function t:AddTab(dj)
 		Position = UDim2.new(m, 4, 0, 0),
 		BackgroundTransparency = 1,
 		ScrollBarThickness = 4,
+		ScrollBarImageColor3 = Color3.fromRGB(255, 40, 40),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		CanvasSize = UDim2.new(0, 0, 0, 0)
 	})
@@ -742,6 +745,7 @@ function di:AddDropdown(fq, fr, fs, ft)
 		CanvasSize = UDim2.new(0, 0, 0, 0),
 		AutomaticCanvasSize = Enum.AutomaticSize.Y,
 		ScrollBarThickness = 4,
+		ScrollBarImageColor3 = Color3.fromRGB(255, 40, 40),
 		BackgroundColor3 = e.inputBackground,
 		ClipsDescendants = true,
 		Visible = true,
