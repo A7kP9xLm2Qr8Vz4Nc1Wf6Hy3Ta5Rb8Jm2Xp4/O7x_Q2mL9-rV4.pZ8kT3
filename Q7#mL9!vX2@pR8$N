@@ -2,25 +2,31 @@ local a = game:GetService("Players")
 local b = game:GetService("RunService")
 local c = game:GetService("Lighting")
 local d = game:GetService("ReplicatedStorage")
+
 local e = loadstring(game:HttpGet("https://raw.githubusercontent.com/A7kP9xLm2Qr8Vz4Nc1Wf6Hy3Ta5Rb8Jm2Xp4/O7x_Q2mL9-rV4.pZ8kT3/refs/heads/main/N7%23qL9%40vX2!mRp8%24"))()
+
 local f = a.LocalPlayer
 local g = f.DisplayName
 local h = workspace.CurrentCamera
+
 _G.blacklistedPlayers = _G.blacklistedPlayers or {}
 _G.tpListedPlayers = _G.tpListedPlayers or {}
 _G.watchlistedPlayers = _G.watchlistedPlayers or {}
+
 local function i(plr)
 	for _, name in ipairs(_G.blacklistedPlayers) do
 		if name:lower() == plr.Name:lower() then return true end
 	end
 	return false
 end
+
 local function j(plr)
 	for _, name in ipairs(_G.tpListedPlayers) do
 		if name:lower() == plr.Name:lower() then return true end
 	end
 	return false
 end
+
 local function k(plr)
 	local n = plr.Name:lower()
 	local d = plr.DisplayName:lower()
@@ -32,18 +38,21 @@ local function k(plr)
 	end
 	return false
 end
+
 local function l()
 	if not f.Character then
 		repeat task.wait() until f.Character
 	end
 	return f.Character
 end
+
 local function m(plr)
 	return plr and plr.Character
 		and plr.Character:FindFirstChild("HumanoidRootPart")
 		and plr.Character:FindFirstChild("Humanoid")
 		and plr.Character.Humanoid.Health > 0
 end
+
 local function n()
 	for _, tool in pairs(f.Backpack:GetChildren()) do
 		if tool.Name == "Punch" and f.Character and f.Character:FindFirstChild("Humanoid") then
@@ -55,6 +64,7 @@ local function n()
 		f.muscleEvent:FireServer("punch", "rightHand")
 	end
 end
+
 local function o(plr)
 	if not m(plr) or not l():FindFirstChild("LeftHand") then return end
 	pcall(function()
@@ -63,6 +73,7 @@ local function o(plr)
 		n()
 	end)
 end
+
 local function p(n)
 	if n >= 1e15 then return string.format("%.1fqa", n / 1e15)
 	elseif n >= 1e12 then return string.format("%.1ft", n / 1e12)
@@ -71,6 +82,7 @@ local function p(n)
 	elseif n >= 1e3  then return string.format("%.1fk", n / 1e3)
 	else return tostring(n) end
 end
+
 local function q(n)
 	local s = tostring(math.floor(n))
 	local k
@@ -80,6 +92,7 @@ local function q(n)
 	end
 	return s
 end
+
 local r = e.new({
 	Title = g .. " Is Smol",
 	FooterText = "Credits: Tree",
@@ -87,12 +100,14 @@ local r = e.new({
 	Width = 600,
 	Height = 400
 })
+
 local s = r:AddTab("Misc")
 local t = r:AddTab("Killing")
 local u = r:AddTab("Teleporting")
 local v = r:AddTab("Spectating")
 local w = r:AddTab("Pets")
 local x = r:AddTab("Stats")
+
 local function y(tab)
 	for _, child in ipairs(tab.page:GetChildren()) do
 		if child:IsA("Frame") and child.Size.X.Offset == 1 then
@@ -100,9 +115,11 @@ local function y(tab)
 		end
 	end
 end
+
 y(s)
 y(v)
 y(w)
+
 s:AddButton("Anti Lag", function()
 	local terrain = workspace:FindFirstChildWhichIsA("Terrain")
 	if terrain then
@@ -134,8 +151,10 @@ s:AddButton("Anti Lag", function()
 		end
 	end
 end)
+
 local z = false
 local ba  = nil
+
 local function bb()
 	if not z or not f.Character then return end
 	local hrp = f.Character:FindFirstChild("HumanoidRootPart")
@@ -150,6 +169,7 @@ local function bb()
 	bv.P = 1250
 	bv.Parent = hrp
 end
+
 local function bc()
 	if not f.Character then return end
 	local hrp = f.Character:FindFirstChild("HumanoidRootPart")
@@ -159,10 +179,12 @@ local function bc()
 		existing:Destroy()
 	end
 end
+
 s:AddToggle("Anti Fling", function(state)
 	z = state
 	if state then bb() else bc() end
 end)
+
 local bd = Instance.new("Part")
 bd.Name = "WalkOnWaterPart"
 bd.Size = Vector3.new(4, 0.1, 4)
@@ -173,6 +195,7 @@ bd.CanTouch = false
 bd.CanQuery = false
 bd.Parent = workspace
 local be
+
 s:AddToggle("Walk On Water", function(state)
 	if be then
 		be:Disconnect()
@@ -191,7 +214,9 @@ s:AddToggle("Walk On Water", function(state)
 		bd.Position = Vector3.new(0, -10000, 0)
 	end
 end)
+
 local bf
+
 t:AddToggle("Kill", function(state)
 	_G.killBlacklistedOnly = state
 	if state then
@@ -212,7 +237,9 @@ t:AddToggle("Kill", function(state)
 		end
 	end
 end)
+
 local bh = {}
+
 local function bi()
 	for _, btn in ipairs(bh) do
 		btn:Destroy()
@@ -229,7 +256,9 @@ local function bi()
 		end
 	end
 end
+
 bi()
+
 t:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
 	text = text:match("^%s*(.-)%s*$")
 	if text == "" then return end
@@ -238,7 +267,9 @@ t:AddTextbox("Add To Watchlist", "Enter Clan Name", function(text)
 	end
 	table.insert(_G.watchlistedPlayers, text)
 end)
+
 local bg
+
 t:AddToggle("Kill Watchlist", function(state)
 	_G.killWatchlisted = state
 	if state then
@@ -259,14 +290,17 @@ t:AddToggle("Kill Watchlist", function(state)
 		end
 	end
 end)
+
 local bj = t:AddSectionLabel("Blacklist: None")
 t:AddButton("Clear Blacklist", function()
 	_G.blacklistedPlayers = {}
 end)
+
 local bk = t:AddSectionLabel("Watchlist: None")
 t:AddButton("Clear Watchlist", function()
 	_G.watchlistedPlayers = {}
 end)
+
 task.spawn(function()
 	while true do
 		bj.Text = #_G.blacklistedPlayers == 0 and "Blacklist: None" or "Blacklist: " .. table.concat(_G.blacklistedPlayers, ", ")
@@ -274,7 +308,9 @@ task.spawn(function()
 		task.wait(0.01)
 	end
 end)
+
 local bl
+
 u:AddToggle("Kill Tp", function(state)
 	_G.killTpListed = state
 	if state then
@@ -317,7 +353,9 @@ u:AddToggle("Kill Tp", function(state)
 		end
 	end
 end)
+
 local bm = {}
+
 local function bn()
 	for _, btn in ipairs(bm) do
 		btn:Destroy()
@@ -334,19 +372,24 @@ local function bn()
 		end
 	end
 end
+
 bn()
+
 local bo = u:AddSectionLabel("TpList: None")
 u:AddButton("Clear TpList", function()
 	_G.tpListedPlayers = {}
 end)
+
 task.spawn(function()
 	while true do
 		bo.Text = #_G.tpListedPlayers == 0 and "TpList: None" or "TpList: " .. table.concat(_G.tpListedPlayers, ", ")
 		task.wait(0.01)
 	end
 end)
+
 local bp = nil
 local bq = false
+
 local function br()
 	if f.Character then
 		local hum = f.Character:FindFirstChildOfClass("Humanoid")
@@ -358,6 +401,7 @@ local function br()
 	bq = false
 	bp = nil
 end
+
 local function bs(plr)
 	if not plr or not plr.Character then return end
 	local hum = plr.Character:FindFirstChildOfClass("Humanoid")
@@ -367,7 +411,9 @@ local function bs(plr)
 		bq = true
 	end
 end
+
 local bt = {}
+
 local function bu()
 	for _, btn in ipairs(bt) do
 		btn:Destroy()
@@ -386,9 +432,12 @@ local function bu()
 		end
 	end
 end
+
 bu()
+
 local bv = f:WaitForChild("petsFolder"):WaitForChild("Unique")
 local bw = d:WaitForChild("rEvents"):WaitForChild("equipPetEvent")
+
 w:AddButton("Equip Wild Wizards", function()
 	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name ~= "Wild Wizard" then
@@ -404,6 +453,7 @@ w:AddButton("Equip Wild Wizards", function()
 		end
 	end
 end)
+
 w:AddButton("Equip Mighty Monsters", function()
 	for _, pet in ipairs(bv:GetChildren()) do
 		if pet.Name ~= "Mighty Monster" then
@@ -419,7 +469,9 @@ w:AddButton("Equip Mighty Monsters", function()
 		end
 	end
 end)
+
 local bx = false
+
 w:AddToggle("Pack Spam WWS/MMS", function(state)
 	bx = state
 	if not bx then return end
@@ -461,7 +513,9 @@ w:AddToggle("Pack Spam WWS/MMS", function(state)
 		end
 	end)
 end)
+
 local by = false
+
 w:AddToggle("Pack Spam MM", function(state)
 	by = state
 	if not by then return end
@@ -480,8 +534,10 @@ w:AddToggle("Pack Spam MM", function(state)
 		end
 	end)
 end)
+
 local bz = nil
 local ca = {}
+
 local function cb()
 	for _, btn in ipairs(ca) do
 		btn:Destroy()
@@ -494,10 +550,13 @@ local function cb()
 		table.insert(ca, btn)
 	end
 end
+
 cb()
+
 local cc = x:AddSectionLabel("Name: N/A")
 local cd = x:AddSectionLabel("Strength: N/A")
 local ce = x:AddSectionLabel("Durability: N/A")
+
 local function cf(plr)
 	if not plr then return end
 	cc.Text = "Name: " .. plr.DisplayName
@@ -513,17 +572,20 @@ local function cf(plr)
 	setStat(cd, "Strength", "Strength")
 	setStat(ce, "Durability", "Durability")
 end
+
 task.spawn(function()
 	while true do
 		if bz then cf(bz) end
 		task.wait(0.01)
 	end
 end)
+
 local cg = x:AddSectionLabel("Enemy Health: N/A")
 local ch = x:AddSectionLabel("Enemy Damage: N/A")
 local ci = x:AddSectionLabel("Your Health: N/A")
 local cj = x:AddSectionLabel("Your Damage: N/A")
 local ck = x:AddSectionLabel("Hits To Kill: N/A")
+
 local function cl(plr)
 	if not plr then return 0 end
 	local dur = plr:FindFirstChild("Durability") or (plr:FindFirstChild("leaderstats") and plr.leaderstats:FindFirstChild("Durability"))
@@ -543,6 +605,7 @@ local function cl(plr)
 	end
 	return dur.Value * mult
 end
+
 local function cm(plr)
 	if not plr or not plr:FindFirstChild("leaderstats") or not plr.leaderstats:FindFirstChild("Strength") then return 0 end
 	local base = plr.leaderstats.Strength.Value * (1/15)
@@ -561,6 +624,74 @@ local function cm(plr)
 	end
 	return base * mult
 end
+
+local co = false
+local cp = {}
+local cq = {}
+
+local function cr()
+	local char = l()
+	return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+t:AddToggle("Kill Auto Detect", function(state)
+	co = state
+end)
+do
+	local cs = 15
+	local ct = 3
+	local cu = 0.02
+	local cv = d:WaitForChild("rEvents"):FindFirstChild("guiDamageEvent")
+	if cv then
+		cv.OnClientEvent:Connect(function(kind, target, dmg)
+			if kind ~= "damageShow" then return end
+			if not co then return end
+			if type(dmg) ~= "number" or dmg <= 0 then return end
+			local cw = cr()
+			if not cw or target ~= cw then return end
+			local cx = {}
+			for _, pl in ipairs(a:GetPlayers()) do
+				if pl == f then continue end
+				local cy = pl.Character
+				local cz = cy and cy:FindFirstChild("HumanoidRootPart")
+				if not cz then continue end
+				if (cz.Position - cw.Position).Magnitude > cs then continue end
+				local da = cm(pl)
+				if da > 0 then
+					table.insert(cx, {pl = pl, diff = math.abs(da - dmg)})
+				end
+			end
+			if #cx == 0 then return end
+			table.sort(cx, function(a, b) return a.diff < b.diff end)
+			local db = cx[1]
+			local dc = tick()
+			local function dd(pl)
+				if cp[pl] and dc - cp[pl] < 8 then return end
+				if not i(pl) then
+					table.insert(_G.blacklistedPlayers, pl.Name)
+				end
+				cp[pl] = dc
+				cq = {}
+			end
+			if db.diff <= dmg * cu then
+				dd(db.pl)
+				return
+			end
+			local de = false
+			for idx = 2, #cx do
+				if cx[idx].diff <= db.diff + dmg * cu then
+					de = true
+					break
+				end
+			end
+			cq[db.pl] = (cq[db.pl] or 0) + 1
+			if not de or cq[db.pl] >= ct then
+				dd(db.pl)
+			end
+		end)
+	end
+end
+
 local function cn(plr)
 	if not plr then
 		cg.Text = "Enemy Health: N/A"
@@ -587,28 +718,32 @@ local function cn(plr)
 	cj.Text = string.format("Your Damage: %s (%s)", p(yDamage), q(yDamage))
 	ck.Text = "Hits To Kill: " .. hits
 end
+
 task.spawn(function()
 	while true do
 		cn(bz)
 		task.wait(0.01)
 	end
 end)
+
 f.CharacterAdded:Connect(function(char)
 	char:WaitForChild("HumanoidRootPart", 5)
 	ba = char:FindFirstChildOfClass("Humanoid")
 	if z then bb() end
 	local hum = char:WaitForChild("Humanoid", 3)
 	if hum then ba = hum end
-	task.wait(0.05)
+	task.wait(0.01)
 	if bq and bp then
 		bs(bp)
 	else
 		if ba then h.CameraSubject = ba end
 	end
 end)
+
 if f.Character then
 	ba = f.Character:FindFirstChildOfClass("Humanoid")
 end
+
 a.PlayerAdded:Connect(function()
 	task.wait(0.01)
 	bi()
@@ -616,6 +751,7 @@ a.PlayerAdded:Connect(function()
 	bu()
 	cb()
 end)
+
 a.PlayerRemoving:Connect(function(plr)
 	task.wait(0.01)
 	if bp == plr then
